@@ -56,7 +56,7 @@
 
     // ---- Scroll reveal ----
     const reveals = document.querySelectorAll(
-        '.section-head, .pain-card, .problem-card, .reassurance-card, .reassurance-text, .proof-card, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .faq-item, .pain-cta, .mini-cta, .approach-card, .principle, .session-card, .price-card, .atmosphere, .story-card'
+        '.section-head, .pain-card, .problem-card, .reassurance-card, .reassurance-text, .proof-card, .practice-photo, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .faq-item, .pain-cta, .mini-cta, .approach-card, .principle, .session-card, .price-card, .atmosphere, .story-card'
     );
     reveals.forEach((el) => el.classList.add('reveal'));
 
@@ -77,14 +77,25 @@
     const form = document.getElementById('leadForm');
     const telegramUrl = 'https://t.me/dizvilook';
 
-    function setFormStatus(message, isError) {
+    function setFormStatus(message, isError, showTelegramLink) {
         let status = form.querySelector('.form-status');
         if (!status) {
             status = document.createElement('p');
             status.className = 'form-status';
             form.appendChild(status);
         }
-        status.textContent = message;
+        status.textContent = '';
+        status.appendChild(document.createTextNode(message));
+        if (showTelegramLink) {
+            status.appendChild(document.createElement('br'));
+            const link = document.createElement('a');
+            link.href = telegramUrl;
+            link.target = '_blank';
+            link.rel = 'noopener';
+            link.className = 'form-status-link';
+            link.textContent = 'Открыть Telegram';
+            status.appendChild(link);
+        }
         status.classList.toggle('is-error', Boolean(isError));
     }
 
@@ -113,12 +124,10 @@
 
             try {
                 await navigator.clipboard.writeText(leadText);
-                setFormStatus('Текст заявки скопирован. Сейчас откроется Telegram — вставьте сообщение в чат и отправьте его Диане.');
+                setFormStatus('Текст заявки скопирован. Теперь откройте Telegram, вставьте сообщение в чат и отправьте его Диане.', false, true);
             } catch (_) {
-                setFormStatus('Сейчас откроется Telegram. Если текст не вставился автоматически, напишите Диане коротко ваш запрос и контакт.');
+                setFormStatus('Не получилось скопировать текст автоматически. Откройте Telegram и напишите Диане коротко ваш запрос и контакт.', true, true);
             }
-
-            window.open(telegramUrl, '_blank', 'noopener');
         });
     }
 })();
