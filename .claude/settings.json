@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git fetch origin 2>/dev/null && git pull --ff-only origin \"$(git branch --show-current)\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
