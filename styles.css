@@ -15,7 +15,7 @@
     --white: #FFFFFF;
     --muted: rgba(255, 248, 238, 0.72);
     --font-body: "Manrope", "Onest", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-    --font-hand: "Caveat Brush", "Comic Sans MS", cursive;
+    --font-hand: "Pangolin", "Comic Sans MS", cursive;
 }
 
 * { box-sizing: border-box; }
@@ -614,11 +614,38 @@ h1, h2, h3, h4 {
 .review p { color: var(--ink); }
 .review-author { display: flex; align-items: center; gap: 12px; }
 .ra-avatar {
+    position: relative;
     width: 46px;
     height: 46px;
     border: 2px solid var(--navy);
     border-radius: 50%;
     flex: 0 0 auto;
+    overflow: hidden;
+}
+.ra-avatar::before,
+.ra-avatar::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.ra-avatar::before {
+    top: 8px;
+    width: 13px;
+    height: 13px;
+    border: 2px solid var(--navy);
+    border-radius: 50%;
+    background: var(--paper);
+    box-shadow: -7px 15px 0 -5px var(--navy), 7px 15px 0 -5px var(--navy);
+}
+.ra-avatar::after {
+    top: 25px;
+    width: 24px;
+    height: 18px;
+    border: 3px solid var(--navy);
+    border-bottom: 0;
+    border-radius: 18px 18px 0 0;
+    background: rgba(255, 248, 238, .5);
 }
 .review-author strong { display: block; color: var(--navy); font-size: .95rem; }
 .reviews-note {
