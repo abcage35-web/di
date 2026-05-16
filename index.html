@@ -3,62 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добро пожаловать</title>
+    <meta name="description" content="Консультации и услуги детского психолога Дианы Лукьянцевой для родителей, которые хотят мягко помочь ребенку справиться с тревогой, истериками, адаптацией и сложными эмоциями.">
+    <title>Диана Лукьянцева - детский психолог</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <h1 class="title">Добро пожаловать</h1>
-            <p class="subtitle">Мы рады видеть вас на нашем сайте</p>
-            <div class="buttons">
-                <a href="#about" class="btn btn-primary">Узнать больше</a>
-                <a href="#contact" class="btn btn-secondary">Связаться с нами</a>
-                <button type="button" class="btn btn-tertiary">привет</button>
-                <button type="button" class="btn btn-tertiary">пока</button>
-            </div>
-        </div>
-        <div class="decoration">
-            <div class="circle circle-1"></div>
-            <div class="circle circle-2"></div>
-            <div class="circle circle-3"></div>
-        </div>
-    </div>
+    <header class="site-header">
+        <a class="brand" href="#top" aria-label="Диана Лукьянцева">
+            <span class="brand-mark">дл</span>
+            <span>Диана Лукьянцева</span>
+        </a>
+        <nav class="nav" aria-label="Главная навигация">
+            <a href="#signals">Когда обращаться</a>
+            <a href="#services">Услуги</a>
+            <a href="#contact">Заявка</a>
+        </nav>
+        <a class="header-cta" href="#contact">Записаться</a>
+    </header>
 
-    <section id="about" class="section">
-        <div class="section-inner">
-            <h2>О нас</h2>
-            <p>Мы создаём современные решения для ваших задач. Наша команда стремится к качеству и надёжности в каждом проекте.</p>
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">✦</div>
-                    <h3>Качество</h3>
-                    <p>Высокие стандарты в каждой детали</p>
+    <main id="top">
+        <section class="hero">
+            <div class="parallax-layer doodle doodle-cloud" data-depth="0.16"></div>
+            <div class="parallax-layer doodle doodle-star" data-depth="0.24"></div>
+            <div class="parallax-layer doodle doodle-spiral" data-depth="0.31"></div>
+            <div class="hero-copy">
+                <p class="eyebrow">Детская психология для спокойствия всей семьи</p>
+                <h1>Детский психолог для спокойствия ребенка и родителей</h1>
+                <p class="lead">Диана Лукьянцева помогает понять причины тревоги, истерик, сложной адаптации и поведения, а затем дает семье бережный и понятный план действий.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#contact">Оставить заявку</a>
+                    <a class="btn btn-secondary" href="#services">Посмотреть услуги</a>
                 </div>
-                <div class="feature">
-                    <div class="feature-icon">◆</div>
-                    <h3>Скорость</h3>
-                    <p>Быстрое и эффективное решение задач</p>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">●</div>
-                    <h3>Надёжность</h3>
-                    <p>Стабильная работа и поддержка</p>
+                <div class="trust-row" aria-label="Ключевые преимущества">
+                    <span>Бережно</span>
+                    <span>Конфиденциально</span>
+                    <span>С понятным планом</span>
                 </div>
             </div>
-        </div>
-    </section>
+            <div class="hero-visual" aria-label="Иллюстрация консультации детского психолога">
+                <div class="sketch-scene" role="img" aria-label="Родитель и ребенок на бережной консультации">
+                    <div class="wall-drawing drawing-house"></div>
+                    <div class="wall-drawing drawing-cloud"></div>
+                    <div class="plant"></div>
+                    <div class="person parent">
+                        <span class="head"></span>
+                        <span class="body"></span>
+                    </div>
+                    <div class="person child">
+                        <span class="head"></span>
+                        <span class="body"></span>
+                    </div>
+                    <div class="person psychologist">
+                        <span class="head"></span>
+                        <span class="body"></span>
+                    </div>
+                    <div class="table">
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="crayon crayon-one"></div>
+                    <div class="crayon crayon-two"></div>
+                </div>
+                <div class="note-card parallax-layer" data-depth="-0.12">
+                    <span>Первый шаг</span>
+                    <strong>Короткая диагностика ситуации</strong>
+                </div>
+            </div>
+        </section>
 
-    <section id="contact" class="section section-dark">
-        <div class="section-inner">
-            <h2>Свяжитесь с нами</h2>
-            <p>Готовы начать? Напишите нам, и мы обсудим ваш проект.</p>
-            <a href="mailto:hello@example.com" class="btn btn-primary">Написать письмо</a>
-        </div>
-    </section>
+        <section class="soft-band" id="signals">
+            <div class="section-heading">
+                <p class="eyebrow">Родители часто приходят, когда</p>
+                <h2>Становится трудно понять: это возрастной этап или ребенку нужна помощь</h2>
+            </div>
+            <div class="signal-grid">
+                <article class="signal-card">
+                    <span class="scribble-icon">~</span>
+                    <h3>Много тревоги</h3>
+                    <p>Ребенок боится оставаться один, переживает из-за школы, ошибок, новых людей или расставания с родителем.</p>
+                </article>
+                <article class="signal-card">
+                    <span class="scribble-icon">!</span>
+                    <h3>Истерики и вспышки</h3>
+                    <p>Слезы, злость и протесты стали частыми, а привычные способы успокоить уже почти не помогают.</p>
+                </article>
+                <article class="signal-card">
+                    <span class="scribble-icon">?</span>
+                    <h3>Сложная адаптация</h3>
+                    <p>Детский сад, школа, переезд, развод, рождение младшего ребенка или другие перемены даются тяжело.</p>
+                </article>
+                <article class="signal-card">
+                    <span class="scribble-icon">♡</span>
+                    <h3>Родителям нужен ориентир</h3>
+                    <p>Хочется понять причины поведения и получить спокойные, конкретные шаги для дома.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="approach">
+            <div class="approach-visual parallax-panel" data-depth="0.08">
+                <div class="paper-card">
+                    <span class="paper-line"></span>
+                    <span class="paper-line short"></span>
+                    <span class="paper-heart"></span>
+                    <p>В центре работы - не "исправить ребенка", а понять его потребность и помочь семье восстановить контакт.</p>
+                </div>
+            </div>
+            <div class="approach-copy">
+                <p class="eyebrow">Как проходит работа</p>
+                <h2>Мягко, структурно и без обвинений</h2>
+                <p>На консультации Диана помогает собрать картину: что видит ребенок, что чувствуют родители, где запускается конфликт и какие изменения можно начать уже сейчас.</p>
+                <ul class="check-list">
+                    <li>разбираем ситуацию простым языком;</li>
+                    <li>отделяем возрастные особенности от тревожных сигналов;</li>
+                    <li>подбираем практичные рекомендации под вашу семью;</li>
+                    <li>бережно сопровождаем ребенка и родителей в процессе.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="services" id="services">
+            <div class="section-heading">
+                <p class="eyebrow">Форматы помощи</p>
+                <h2>Выберите, с чего начать</h2>
+            </div>
+            <div class="service-grid">
+                <article class="service-card featured">
+                    <span class="service-tag">Для старта</span>
+                    <h3>Первичная консультация для родителей</h3>
+                    <p>Разбор запроса, сбор истории, первичные гипотезы и понятный план дальнейших шагов.</p>
+                    <a href="#contact">Хочу консультацию</a>
+                </article>
+                <article class="service-card">
+                    <span class="service-tag">Для ребенка</span>
+                    <h3>Индивидуальные встречи</h3>
+                    <p>Работа с эмоциями, тревогой, самооценкой, поведением и навыками саморегуляции через бережные методы.</p>
+                    <a href="#contact">Обсудить формат</a>
+                </article>
+                <article class="service-card">
+                    <span class="service-tag">Для семьи</span>
+                    <h3>Сопровождение родителей</h3>
+                    <p>Поддержка в сложных периодах: адаптация, кризисы, конфликты, изменения в семейной системе.</p>
+                    <a href="#contact">Получить план</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="steps">
+            <div class="section-heading">
+                <p class="eyebrow">Путь после заявки</p>
+                <h2>Все просто и спокойно</h2>
+            </div>
+            <div class="steps-list">
+                <div class="step">
+                    <span>1</span>
+                    <p>Вы оставляете контакты и коротко описываете ситуацию.</p>
+                </div>
+                <div class="step">
+                    <span>2</span>
+                    <p>Диана уточняет детали и предлагает подходящий формат.</p>
+                </div>
+                <div class="step">
+                    <span>3</span>
+                    <p>На первой встрече появляется ясность и первые домашние шаги.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="contact-copy">
+                <p class="eyebrow">Оставьте заявку</p>
+                <h2>Расскажите, что вас беспокоит</h2>
+                <p>Можно написать коротко. Главное - оставить удобный способ связи, чтобы Диана могла вернуться с вопросами и предложить следующий шаг.</p>
+                <div class="contact-badges">
+                    <span>Ответ в течение дня</span>
+                    <span>Без оценки и давления</span>
+                    <span>Для родителей детей 3-12 лет</span>
+                </div>
+            </div>
+            <form class="lead-form" action="mailto:hello@example.com" method="post" enctype="text/plain">
+                <label>
+                    Ваше имя
+                    <input type="text" name="Имя" placeholder="Например, Анна" required>
+                </label>
+                <label>
+                    Телефон или мессенджер
+                    <input type="text" name="Контакт" placeholder="+7 / WhatsApp / Telegram" required>
+                </label>
+                <label>
+                    Возраст ребенка
+                    <input type="text" name="Возраст ребенка" placeholder="Например, 6 лет">
+                </label>
+                <label>
+                    Что происходит
+                    <textarea name="Запрос" rows="4" placeholder="Коротко опишите ситуацию"></textarea>
+                </label>
+                <button class="btn btn-primary" type="submit">Отправить заявку</button>
+                <p class="form-note">Нажимая кнопку, вы отправляете данные через почтовый клиент. Контакты можно заменить на рабочую форму после подключения CRM.</p>
+            </form>
+        </section>
+    </main>
 
     <footer class="footer">
-        <p>&copy; 2026 Все права защищены</p>
+        <p>Диана Лукьянцева - консультации и услуги в детской психологии</p>
+        <a href="#top">Наверх</a>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
