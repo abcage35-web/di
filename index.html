@@ -431,6 +431,57 @@
         </div>
     </footer>
 
+    <!-- Рыжий кролик, выглядывающий из-за нижнего края -->
+    <div class="bunny-peek" aria-hidden="true">
+        <svg viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+            <g filter="url(#roughen)">
+                <!-- левое ухо -->
+                <path d="M68 38 Q56 6 80 4 Q96 8 90 70 Z" fill="#E89455" stroke="#1F4068" stroke-width="3" stroke-linejoin="round"/>
+                <path d="M74 30 Q70 14 82 14 Q90 22 86 60 Z" fill="#F4B6C8"/>
+                <!-- правое ухо -->
+                <path d="M132 38 Q144 6 120 4 Q104 8 110 70 Z" fill="#E89455" stroke="#1F4068" stroke-width="3" stroke-linejoin="round"/>
+                <path d="M126 30 Q130 14 118 14 Q110 22 114 60 Z" fill="#F4B6C8"/>
+                <!-- голова -->
+                <ellipse cx="100" cy="125" rx="64" ry="58" fill="#E89455" stroke="#1F4068" stroke-width="3"/>
+                <!-- щёчки -->
+                <ellipse cx="52" cy="145" rx="14" ry="10" fill="#F4B6C8" opacity="0.75"/>
+                <ellipse cx="148" cy="145" rx="14" ry="10" fill="#F4B6C8" opacity="0.75"/>
+                <!-- глаза -->
+                <g class="bunny-eyes">
+                    <ellipse cx="76" cy="120" rx="6" ry="9" fill="#1F4068"/>
+                    <ellipse cx="124" cy="120" rx="6" ry="9" fill="#1F4068"/>
+                    <circle cx="78" cy="116" r="2.2" fill="#FFF8EE"/>
+                    <circle cx="126" cy="116" r="2.2" fill="#FFF8EE"/>
+                </g>
+                <!-- нос -->
+                <path d="M92 144 Q100 153 108 144 Q100 150 92 144 Z" fill="#D27A57" stroke="#1F4068" stroke-width="2" stroke-linejoin="round"/>
+                <!-- рот -->
+                <path d="M100 152 Q100 159 92 161 M100 152 Q100 159 108 161" fill="none" stroke="#1F4068" stroke-width="2" stroke-linecap="round"/>
+                <!-- усы -->
+                <g stroke="#1F4068" stroke-width="1.6" stroke-linecap="round" fill="none">
+                    <path d="M62 148 Q42 144 34 142"/>
+                    <path d="M62 154 Q42 154 34 158"/>
+                    <path d="M138 148 Q158 144 166 142"/>
+                    <path d="M138 154 Q158 154 166 158"/>
+                </g>
+                <!-- лапки на краю -->
+                <ellipse cx="58" cy="208" rx="24" ry="14" fill="#E89455" stroke="#1F4068" stroke-width="3"/>
+                <ellipse cx="142" cy="208" rx="24" ry="14" fill="#E89455" stroke="#1F4068" stroke-width="3"/>
+                <ellipse cx="58" cy="212" rx="9" ry="5" fill="#F4B6C8"/>
+                <ellipse cx="142" cy="212" rx="9" ry="5" fill="#F4B6C8"/>
+                <!-- маленькие пальчики -->
+                <g stroke="#1F4068" stroke-width="1.8" stroke-linecap="round">
+                    <line x1="46" y1="216" x2="46" y2="222"/>
+                    <line x1="58" y1="218" x2="58" y2="224"/>
+                    <line x1="70" y1="216" x2="70" y2="222"/>
+                    <line x1="130" y1="216" x2="130" y2="222"/>
+                    <line x1="142" y1="218" x2="142" y2="224"/>
+                    <line x1="154" y1="216" x2="154" y2="222"/>
+                </g>
+            </g>
+        </svg>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
