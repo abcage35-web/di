@@ -99,6 +99,30 @@
         status.classList.toggle('is-error', Boolean(isError));
     }
 
+    // ---- Bunny speech bubble ----
+    const bunnyQuote = document.querySelector('[data-bunny-quote]');
+    if (bunnyQuote) {
+        const bubble = bunnyQuote.closest('.bunny-bubble');
+        const phrases = [
+            'Сегодня вы уже хороший родитель — правда-правда',
+            'Иногда обнять полезнее, чем объяснить',
+            'Можно быть рядом, а не идеальным',
+            'Спросите ребёнка: «как ты сейчас?» — просто так',
+            'Слушать важнее, чем отвечать',
+            'Капризы — это не «плохо». Это сигнал.',
+            'Глубокий вдох — и вы снова с ребёнком'
+        ];
+        let qi = 0;
+        setInterval(() => {
+            bubble.classList.add('fade');
+            setTimeout(() => {
+                qi = (qi + 1) % phrases.length;
+                bunnyQuote.textContent = phrases[qi];
+                bubble.classList.remove('fade');
+            }, 460);
+        }, 6500);
+    }
+
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
