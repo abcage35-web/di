@@ -993,6 +993,14 @@ h1, h2, h3, h4 {
         transform-origin: 100% 100%;
     }
     .bunny-bubble.show { transform: rotate(-1.5deg) scale(1); }
+    .bunny-bubble::before {
+        right: 22px;
+        bottom: -14px;
+    }
+    .bunny-bubble::after {
+        right: 42px;
+        bottom: -28px;
+    }
 }
 
 .reveal {
