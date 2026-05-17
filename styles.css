@@ -571,12 +571,30 @@ h1, h2, h3, h4 {
 .step {
     padding: 30px 24px;
     box-shadow: 5px 5px 0 var(--pink);
+    position: relative;
 }
 .step-num {
     color: var(--coral);
     font-family: var(--font-hand);
     font-size: 3.4rem;
     line-height: 1;
+}
+.steps .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -38px;
+    width: 52px;
+    height: 32px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 40' fill='none' stroke='%23FF7B5A' stroke-width='3.6' stroke-linecap='round' stroke-linejoin='round'><path d='M4 22 Q22 6 40 22 T76 20'/><path d='M62 8 L78 20 L62 30'/></svg>") no-repeat center / contain;
+    pointer-events: none;
+    z-index: 5;
+    transform: translateY(-50%);
+    animation: step-arrow-bob 2.2s ease-in-out infinite;
+}
+@keyframes step-arrow-bob {
+    0%, 100% { transform: translate(0, -50%); }
+    50%      { transform: translate(6px, -50%); }
 }
 
 .price-grid { grid-template-columns: repeat(4, 1fr); }
@@ -883,6 +901,7 @@ h1, h2, h3, h4 {
 
 @media (max-width: 1040px) {
     .price-grid, .steps { grid-template-columns: repeat(2, 1fr); }
+    .steps .step:nth-child(2):not(:last-child)::after { display: none; }
 }
 @media (max-width: 980px) {
     .problem-grid, .reviews-grid { grid-template-columns: repeat(2, 1fr); }
@@ -903,6 +922,7 @@ h1, h2, h3, h4 {
     .problem-card, .review, .step, .price-card, .approach-card.highlight { transform: none !important; }
     .lead-form { padding: 30px 22px; transform: none; }
     .btn { width: 100%; }
+    .steps .step:not(:last-child)::after { display: none; }
 }
 @media (max-width: 430px) {
     .container, .nav-inner, .hero-inner { width: min(100% - 40px, 1200px); }
