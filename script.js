@@ -99,9 +99,10 @@
         status.classList.toggle('is-error', Boolean(isError));
     }
 
-    // ---- Bunny speech bubble ----
+    // ---- Bunny speech bubble (по клику) ----
     const bunnyQuote = document.querySelector('[data-bunny-quote]');
-    if (bunnyQuote) {
+    const bunny = document.querySelector('.bunny-peek');
+    if (bunnyQuote && bunny) {
         const bubble = bunnyQuote.closest('.bunny-bubble');
         const phrases = [
             'Сегодня вы уже хороший родитель — правда-правда',
@@ -112,15 +113,22 @@
             'Капризы — это не «плохо». Это сигнал.',
             'Глубокий вдох — и вы снова с ребёнком'
         ];
-        let qi = 0;
-        setInterval(() => {
-            bubble.classList.add('fade');
-            setTimeout(() => {
-                qi = (qi + 1) % phrases.length;
-                bunnyQuote.textContent = phrases[qi];
-                bubble.classList.remove('fade');
-            }, 460);
-        }, 6500);
+        let qi = -1;
+        let hideTimer = null;
+        function showNextQuote() {
+            qi = (qi + 1) % phrases.length;
+            bunnyQuote.textContent = phrases[qi];
+            bubble.classList.add('show');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => bubble.classList.remove('show'), 6500);
+        }
+        bunny.addEventListener('click', showNextQuote);
+        bunny.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                showNextQuote();
+            }
+        });
     }
 
     if (form) {
