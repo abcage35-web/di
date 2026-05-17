@@ -1,5 +1,6 @@
 # Project rules
 
-- The user works in parallel with another agent (codex). On every session start the SessionStart hook pulls latest commits from the current branch; trust that state and check `git log` if unsure.
-- Always commit and push edits immediately after making them — no need to ask. Use clear commit messages. Push to the current branch.
-- Default working branch for new work is `main` (GitHub Pages is served from it).
+- Работаем **только** в ветке `main`. Новые ветки не создавать ни при каких обстоятельствах (GitHub Pages раздаётся с `main`).
+- Пользователь поочерёдно работает с другим агентом (codex), поэтому **перед первой правкой в сессии** ровно **один раз** синхронизировать локальные файлы с удалённым `main` (`git fetch origin main` + `git pull --ff-only origin main`) и работать от актуального последнего коммита. Повторно синхронизироваться в этой же сессии не нужно.
+- После **каждой** правки сразу делать `git add` → `git commit` с ясным сообщением → `git push -u origin main`. Не спрашивать подтверждения, не накапливать изменения.
+- SessionStart-хук подтягивает свежие коммиты текущей ветки на старте сессии — этому состоянию можно доверять, при сомнениях смотреть `git log`.
