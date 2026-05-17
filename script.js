@@ -99,6 +99,24 @@
         status.classList.toggle('is-error', Boolean(isError));
     }
 
+    // ---- Mobile nav menu ----
+    const navToggle = document.querySelector('.nav-toggle');
+    const navEl = document.querySelector('.nav');
+    if (navToggle && navEl) {
+        const closeMenu = () => {
+            navEl.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        };
+        navToggle.addEventListener('click', () => {
+            const open = navEl.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', String(open));
+        });
+        navEl.querySelectorAll('.nav-links a').forEach((a) => a.addEventListener('click', closeMenu));
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navEl.classList.contains('open')) closeMenu();
+        });
+    }
+
     // ---- Bunny speech bubble (по клику) ----
     const bunnyQuote = document.querySelector('[data-bunny-quote]');
     const bunny = document.querySelector('.bunny-peek');
