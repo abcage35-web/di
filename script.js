@@ -152,33 +152,71 @@
 
     // ---- Resource shelf ----
     const addWinBtn = document.getElementById('addWin');
+    const addChildCardBtn = document.getElementById('addChildCard');
+    const addParentCardBtn = document.getElementById('addParentCard');
     const printShelfBtn = document.getElementById('printShelf');
+    const childCustom = document.getElementById('childCustom');
+    const parentCustom = document.getElementById('parentCustom');
     const winInput = document.getElementById('winInput');
-    const supportInput = document.getElementById('supportInput');
     const winList = document.getElementById('winList');
+    const childShelf = document.getElementById('childShelf');
+    const parentShelf = document.getElementById('parentShelf');
 
-    if (addWinBtn && winInput && supportInput && winList) {
+    function addShelfItem(list, text) {
+        const value = text.trim();
+        if (!list || !value) return false;
+
+        const exists = Array.from(list.children).some((item) => item.textContent.trim().toLowerCase() === value.toLowerCase());
+        if (exists) return false;
+
+        const item = document.createElement('li');
+        item.textContent = value;
+        item.className = 'is-new';
+        list.appendChild(item);
+        window.setTimeout(() => item.classList.remove('is-new'), 500);
+        return true;
+    }
+
+    document.querySelectorAll('.resource-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+            const target = chip.dataset.shelfTarget === 'parent' ? parentShelf : childShelf;
+            const added = addShelfItem(target, chip.dataset.shelfText || chip.textContent);
+            if (added) {
+                chip.classList.add('is-added');
+                chip.setAttribute('aria-pressed', 'true');
+            }
+        });
+    });
+
+    if (addChildCardBtn && childCustom) {
+        addChildCardBtn.addEventListener('click', () => {
+            if (!childCustom.value.trim()) {
+                childCustom.focus();
+                return;
+            }
+            if (addShelfItem(childShelf, childCustom.value)) childCustom.value = '';
+            childCustom.focus();
+        });
+    }
+
+    if (addParentCardBtn && parentCustom) {
+        addParentCardBtn.addEventListener('click', () => {
+            if (!parentCustom.value.trim()) {
+                parentCustom.focus();
+                return;
+            }
+            if (addShelfItem(parentShelf, parentCustom.value)) parentCustom.value = '';
+            parentCustom.focus();
+        });
+    }
+
+    if (addWinBtn && winInput && winList) {
         addWinBtn.addEventListener('click', () => {
-            const win = winInput.value.trim();
-            const support = supportInput.value.trim();
-            if (!win) {
+            if (!winInput.value.trim()) {
                 winInput.focus();
                 return;
             }
-
-            const item = document.createElement('li');
-            const strong = document.createElement('strong');
-            strong.textContent = 'Победа: ';
-            item.appendChild(strong);
-            item.appendChild(document.createTextNode(win));
-
-            const span = document.createElement('span');
-            span.textContent = support ? `Опора: ${support}` : 'Опора: заметили и сохранили эту победу.';
-            item.appendChild(span);
-
-            winList.appendChild(item);
-            winInput.value = '';
-            supportInput.value = '';
+            if (addShelfItem(winList, winInput.value)) winInput.value = '';
             winInput.focus();
         });
     }

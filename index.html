@@ -405,35 +405,82 @@
             <div class="container">
                 <div class="section-head center">
                     <span class="eyebrow">можно забрать бесплатно</span>
-                    <h2>Ресурсная полочка маленьких побед</h2>
-                    <p class="section-lead">ОРКТ и нарративная практика помогают замечать не только проблему, но и исключения: когда уже получилось хоть чуть-чуть. Соберите полочку и распечатайте её для дома.</p>
+                    <h2>Семейный шкафчик опор</h2>
+                    <p class="section-lead">Выберите готовые карточки или добавьте свои. В конце получится маленькая карта сильных сторон, которую можно распечатать для дома.</p>
                 </div>
 
                 <div class="resource-builder">
                     <div class="resource-form">
+                        <div class="resource-choice-group">
+                            <h3>Что уже получается у ребёнка?</h3>
+                            <div class="resource-chips">
+                                <button type="button" class="resource-chip" data-shelf-target="child" data-shelf-text="просит помощи, когда трудно">просит помощи</button>
+                                <button type="button" class="resource-chip" data-shelf-target="child" data-shelf-text="умеет радоваться маленьким успехам">радуется успехам</button>
+                                <button type="button" class="resource-chip" data-shelf-target="child" data-shelf-text="пробует снова после ошибки">пробует снова</button>
+                                <button type="button" class="resource-chip" data-shelf-target="child" data-shelf-text="может договориться, когда спокоен">может договориться</button>
+                                <button type="button" class="resource-chip" data-shelf-target="child" data-shelf-text="замечает, когда ему нужна пауза">замечает паузу</button>
+                                <button type="button" class="resource-chip" data-shelf-target="child" data-shelf-text="хорошо придумывает идеи и игры">придумывает идеи</button>
+                            </div>
+                            <label class="field">
+                                <span>Добавить своё про ребёнка</span>
+                                <input type="text" id="childCustom" placeholder="Например: быстро мирится после ссоры">
+                            </label>
+                            <button type="button" class="btn btn-primary btn-block" id="addChildCard">Добавить на детскую полку</button>
+                        </div>
+
+                        <div class="resource-choice-group">
+                            <h3>Что помогает вам как родителю?</h3>
+                            <div class="resource-chips">
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею замечать, когда всем нужна пауза">замечаю паузу</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я могу говорить спокойнее, когда есть план">говорю спокойнее</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я вижу не только трудность, но и старание ребёнка">вижу старание</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею просить поддержку, когда тяжело">прошу поддержку</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я уже ищу решения, а не остаюсь один на один">ищу решения</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="у нашей семьи есть моменты, когда получается быть командой">мы команда</button>
+                            </div>
+                            <label class="field">
+                                <span>Добавить своё про себя или семью</span>
+                                <input type="text" id="parentCustom" placeholder="Например: умею обнимать вместо спора">
+                            </label>
+                            <button type="button" class="btn btn-primary btn-block" id="addParentCard">Добавить на родительскую полку</button>
+                        </div>
+
                         <label class="field">
-                            <span>Маленькая победа ребёнка</span>
-                            <input type="text" id="winInput" placeholder="Например: сам начал уроки 10 минут">
+                            <span>Маленькая победа этой недели</span>
+                            <input type="text" id="winInput" placeholder="Например: один вечер без скандала из-за уроков">
                         </label>
-                        <label class="field">
-                            <span>Что помогло?</span>
-                            <input type="text" id="supportInput" placeholder="Например: таймер, пауза, моя спокойная подсказка">
-                        </label>
-                        <button type="button" class="btn btn-primary btn-block" id="addWin">Положить на полочку</button>
+                        <button type="button" class="btn btn-primary btn-block" id="addWin">Добавить победу</button>
                         <button type="button" class="btn btn-ghost btn-block print-btn" id="printShelf">Распечатать карту</button>
-                        <a class="direct-contact" href="#cta">Хочу получить такую карту и рекомендации</a>
+                        <a class="direct-contact" href="#cta">Хочу разобрать это с Дианой</a>
                     </div>
-                    <div class="shelf-card" id="shelfCard">
-                        <div class="shelf-top">
+                    <div class="shelf-card cabinet-card" id="shelfCard">
+                        <div class="cabinet-roof">
                             <span class="medal" aria-hidden="true">★</span>
                             <div>
-                                <h3>Полочка достижений</h3>
-                                <p>Здесь живут маленькие победы, которые помогают семье двигаться дальше.</p>
+                                <h3>Наш шкафчик опор</h3>
+                                <p>То, на что можно опереться в трудный день.</p>
                             </div>
                         </div>
-                        <ul class="win-list" id="winList">
-                            <li><strong>Победа:</strong> заметили, что стало чуть легче. <span>Опора: вы уже ищете помощь.</span></li>
-                        </ul>
+                        <div class="cabinet-body">
+                            <section class="cabinet-shelf child-shelf">
+                                <h4>Полка ребёнка</h4>
+                                <ul class="shelf-list" id="childShelf">
+                                    <li>уже умеет учиться новому</li>
+                                </ul>
+                            </section>
+                            <section class="cabinet-shelf parent-shelf">
+                                <h4>Полка родителя</h4>
+                                <ul class="shelf-list" id="parentShelf">
+                                    <li>уже ищет, как семье стало бы легче</li>
+                                </ul>
+                            </section>
+                            <section class="cabinet-shelf win-shelf">
+                                <h4>Маленькие победы</h4>
+                                <ul class="shelf-list" id="winList">
+                                    <li>заметили, что что-то уже получается</li>
+                                </ul>
+                            </section>
+                        </div>
                         <div class="trophy-row" aria-hidden="true">
                             <span class="trophy medal-shape"></span>
                             <span class="trophy cup-shape"></span>
