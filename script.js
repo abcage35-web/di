@@ -58,7 +58,7 @@
 
     // ---- Scroll reveal ----
     const reveals = document.querySelectorAll(
-        '.section-head, .pain-card, .problem-card, .issue-picker, .reassurance-card, .reassurance-text, .proof-card, .practice-photo, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .faq-item, .pain-cta, .mini-cta, .approach-card, .principle, .session-card, .price-card, .atmosphere, .story-card, .resource-form, .shelf-card, .price-note'
+        '.section-head, .pain-card, .problem-card, .issue-picker, .reassurance-card, .reassurance-text, .proof-card, .practice-photo, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .faq-item, .pain-cta, .mini-cta, .approach-card, .principle, .session-card, .price-card, .atmosphere, .story-card, .resource-form, .shelf-card, .price-note, .skill-lab'
     );
     reveals.forEach((el) => el.classList.add('reveal'));
 
@@ -155,12 +155,68 @@
     const addChildCardBtn = document.getElementById('addChildCard');
     const addParentCardBtn = document.getElementById('addParentCard');
     const printShelfBtn = document.getElementById('printShelf');
+    const childName = document.getElementById('childName');
+    const parentName = document.getElementById('parentName');
+    const treasureTitle = document.querySelector('[data-treasure-title]');
+    const treasureSubtitle = document.querySelector('[data-treasure-subtitle]');
+    const childShelfTitle = document.querySelector('[data-child-shelf-title]');
+    const parentShelfTitle = document.querySelector('[data-parent-shelf-title]');
     const childCustom = document.getElementById('childCustom');
     const parentCustom = document.getElementById('parentCustom');
     const winInput = document.getElementById('winInput');
     const winList = document.getElementById('winList');
     const childShelf = document.getElementById('childShelf');
     const parentShelf = document.getElementById('parentShelf');
+
+    function getFamilyRoles() {
+        const none = document.querySelector('[data-family-none]');
+        if (none && none.checked) return '';
+        return Array.from(document.querySelectorAll('[data-family-role]'))
+            .filter((input) => input.checked)
+            .map((input) => input.value)
+            .join(' и ');
+    }
+
+    function updateTreasureLabels() {
+        const child = childName ? childName.value.trim() : '';
+        const parent = parentName ? parentName.value.trim() : '';
+        const roles = getFamilyRoles();
+        const family = child ? `Сундук суперсил семьи ${child}` : 'Сундук суперсил семьи';
+        if (treasureTitle) treasureTitle.textContent = family;
+        if (childShelfTitle) childShelfTitle.textContent = child ? `Суперсилы ${child}` : 'Суперсилы ребёнка';
+        if (parentShelfTitle) parentShelfTitle.textContent = parent ? `Суперсилы ${parent}` : 'Суперсилы родителя';
+        if (treasureSubtitle) {
+            const who = [parent, roles].filter(Boolean).join(', ');
+            treasureSubtitle.textContent = who
+                ? `${who}: выберите опоры и распечатайте карту для дома.`
+                : 'Выберите опоры и распечатайте карту для дома.';
+        }
+    }
+
+    [childName, parentName].forEach((input) => {
+        if (input) input.addEventListener('input', updateTreasureLabels);
+    });
+    document.querySelectorAll('[data-family-role], [data-family-none]').forEach((input) => {
+        input.addEventListener('change', () => {
+            if (input.matches('[data-family-none]') && input.checked) {
+                document.querySelectorAll('[data-family-role]').forEach((role) => { role.checked = false; });
+            } else if (input.checked) {
+                const none = document.querySelector('[data-family-none]');
+                if (none) none.checked = false;
+            }
+            updateTreasureLabels();
+        });
+    });
+    document.querySelectorAll('.role-picker label').forEach((label) => {
+        label.addEventListener('click', (event) => {
+            const input = label.querySelector('input');
+            if (!input || event.target === input) return;
+            event.preventDefault();
+            input.checked = !input.checked;
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+    });
+    updateTreasureLabels();
 
     function addShelfItem(list, text) {
         const value = text.trim();
@@ -225,6 +281,43 @@
         printShelfBtn.addEventListener('click', () => window.print());
     }
 
+    // ---- Skill builder ----
+    const buildSkillBtn = document.getElementById('buildSkill');
+    const skillProblem = document.getElementById('skillProblem');
+    const skillCustom = document.getElementById('skillCustom');
+    const skillSupport = document.getElementById('skillSupport');
+    const skillReminder = document.getElementById('skillReminder');
+    const skillSteps = document.getElementById('skillSteps');
+
+    if (buildSkillBtn && skillSteps) {
+        buildSkillBtn.addEventListener('click', () => {
+            const skill = (skillCustom && skillCustom.value.trim()) || (skillProblem && skillProblem.value.trim());
+            const support = skillSupport && skillSupport.value.trim();
+            const reminder = skillReminder && skillReminder.value.trim();
+
+            if (!skill) {
+                if (skillCustom) skillCustom.focus();
+                return;
+            }
+
+            const steps = [
+                `Навык: ${skill}.`,
+                'Польза: когда навык начнёт получаться, дома станет спокойнее и понятнее.',
+                `Команда поддержки: ${support || 'выберите 1-2 взрослых или близких людей'}.`,
+                `Мягкое напоминание: ${reminder || 'договоритесь о коротком слове, жесте или карточке'}.`,
+                'Тренировка: замечайте маленькие попытки и хвалите не только результат.',
+                'Праздник: заранее придумайте, как отметить первые 3-5 удачных попыток.'
+            ];
+
+            skillSteps.innerHTML = '';
+            steps.forEach((step) => {
+                const item = document.createElement('li');
+                item.textContent = step;
+                skillSteps.appendChild(item);
+            });
+        });
+    }
+
     // ---- Fufik speech bubble ----
     const bunnyQuote = document.querySelector('[data-bunny-quote]');
     const bunnyAction = document.querySelector('[data-bunny-action]');
@@ -237,7 +330,14 @@
             { text: 'Можно быть рядом, а не идеальным' },
             { text: 'Спросите ребёнка: «как ты сейчас?» — просто так' },
             { text: 'Сложное поведение — это сигнал, а не приговор' },
-            { text: 'Соберите ресурсную полочку и заберите медаль', href: '#resources', label: 'Собрать полочку' },
+            { text: 'Вы не обязаны всё решать за один вечер' },
+            { text: 'Ребёнку важен не идеальный взрослый, а живой и тёплый' },
+            { text: 'Если сегодня получилось на 1% спокойнее — это уже движение' },
+            { text: 'Можно сначала выдохнуть, а потом воспитывать' },
+            { text: 'Когда вы просите помощь, вы заботитесь о семье' },
+            { text: 'Замечайте не только срывы, но и маленькие попытки' },
+            { text: 'Соберите сундук суперсил и заберите медаль', href: '#resources', label: 'Собрать сундук' },
+            { text: 'Попробуйте превратить трудность в навык', href: '#skill-lab', label: 'Примерить навык' },
             { text: 'На бесплатном звонке можно коротко свериться', href: '#cta', label: 'Записаться' },
             { text: 'Вы уже заметили трудность. Это важный первый шаг' }
         ];
