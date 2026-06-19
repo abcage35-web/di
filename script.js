@@ -453,9 +453,9 @@
 
             try {
                 await navigator.clipboard.writeText(leadText);
-                setFormStatus('Текст заявки скопирован. Вставьте его в открывшийся чат Telegram и отправьте Диане.', false, !opened);
+                setFormStatus('Текст заявки скопирован. Вставьте его в открывшийся чат Telegram и нажмите “Отправить”.', false, !opened);
             } catch (_) {
-                setFormStatus('Не получилось скопировать текст автоматически. Откройте Telegram и напишите Диане коротко ваш запрос и контакт.', true, true);
+                setFormStatus('Не получилось скопировать текст автоматически. Откройте Telegram и напишите Диане коротко: запрос, имя, контакт и возраст ребёнка.', true, true);
             }
         });
     }
