@@ -123,9 +123,26 @@
     // ---- Issue picker ----
     const issuePicker = document.getElementById('issue-picker');
     if (issuePicker) {
+        const issueCards = document.querySelectorAll('[data-issue-card]');
         const issueInputs = issuePicker.querySelectorAll('input[type="checkbox"]');
+        const issueResultTitle = issuePicker.querySelector('.issue-result strong');
         const issueResult = issuePicker.querySelector('[data-issue-result]');
         const messageField = form ? form.message : null;
+        const topicField = form ? form.topic : null;
+
+        function setIssueText(text, topic) {
+            selectedIssueText = `Похоже, сейчас важнее всего: ${text}.`;
+            if (issueResultTitle) issueResultTitle.textContent = 'Запрос выбран';
+            issueResult.textContent = `${selectedIssueText} С этим можно прийти на короткий звонок.`;
+
+            if (messageField && (!messageField.value.trim() || messageField.dataset.autofilled === 'issue')) {
+                messageField.value = selectedIssueText;
+                messageField.dataset.autofilled = 'issue';
+            }
+            if (topicField && topic) {
+                topicField.value = topic;
+            }
+        }
 
         function updateIssueResult() {
             const selected = Array.from(issueInputs)
@@ -134,20 +151,39 @@
 
             if (!selected.length) {
                 selectedIssueText = '';
+                if (issueResultTitle) issueResultTitle.textContent = 'Ваш запрос появится здесь';
                 issueResult.textContent = 'Выберите 1-3 пункта, и я подскажу, с чего начать.';
                 return;
             }
 
             const visible = selected.slice(0, 4).join(', ');
-            selectedIssueText = `Похоже, сейчас важнее всего: ${visible}.`;
-            issueResult.textContent = `${selectedIssueText} С этим можно прийти на короткий звонок.`;
-
-            if (messageField && !messageField.value.trim()) {
-                messageField.value = selectedIssueText;
-            }
+            issueCards.forEach((card) => {
+                card.classList.remove('is-selected');
+                card.setAttribute('aria-pressed', 'false');
+            });
+            setIssueText(visible);
         }
 
         issueInputs.forEach((input) => input.addEventListener('change', updateIssueResult));
+        issueCards.forEach((card) => {
+            const chooseCard = () => {
+                issueInputs.forEach((input) => { input.checked = false; });
+                issueCards.forEach((item) => {
+                    const isCurrent = item === card;
+                    item.classList.toggle('is-selected', isCurrent);
+                    item.setAttribute('aria-pressed', String(isCurrent));
+                });
+                setIssueText(card.dataset.issueText || card.textContent.trim(), card.dataset.issueTopic);
+            };
+
+            card.addEventListener('click', chooseCard);
+            card.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    chooseCard();
+                }
+            });
+        });
     }
 
     // ---- Resource shelf ----
