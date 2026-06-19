@@ -326,19 +326,35 @@
     const skillSteps = document.getElementById('skillSteps');
 
     if (buildSkillBtn && skillSteps) {
+        if (skillProblem && skillCustom) {
+            skillProblem.addEventListener('change', () => {
+                const option = skillProblem.options[skillProblem.selectedIndex];
+                const suggestion = option ? option.dataset.skill : '';
+                skillCustom.placeholder = suggestion
+                    ? `Например: ${suggestion}`
+                    : 'Например: просить помощь вместо крика';
+            });
+        }
+
         buildSkillBtn.addEventListener('click', () => {
-            const skill = (skillCustom && skillCustom.value.trim()) || (skillProblem && skillProblem.value.trim());
+            const problem = skillProblem && skillProblem.value.trim();
+            const skill = skillCustom && skillCustom.value.trim();
             const support = skillSupport && skillSupport.value.trim();
             const reminder = skillReminder && skillReminder.value.trim();
 
+            if (!problem) {
+                if (skillProblem) skillProblem.focus();
+                return;
+            }
             if (!skill) {
                 if (skillCustom) skillCustom.focus();
                 return;
             }
 
             const steps = [
-                `Навык: ${skill}.`,
-                'Польза: когда навык начнёт получаться, дома станет спокойнее и понятнее.',
+                `Трудность: ${problem}.`,
+                `Навык, который поможет: ${skill}.`,
+                'Польза: когда навык начнёт получаться, ситуация станет спокойнее и понятнее.',
                 `Команда поддержки: ${support || 'выберите 1-2 взрослых или близких людей'}.`,
                 `Мягкое напоминание: ${reminder || 'договоритесь о коротком слове, жесте или карточке'}.`,
                 'Тренировка: замечайте маленькие попытки и хвалите не только результат.',
@@ -367,7 +383,7 @@
             { text: 'Спросите ребёнка: «как ты сейчас?» — просто так' },
             { text: 'Сложное поведение — это сигнал, а не приговор' },
             { text: 'Вы не обязаны всё решать за один вечер' },
-            { text: 'Ребёнку важен не идеальный взрослый, а живой и тёплый' },
+            { text: 'Ребёнку важен не идеальный взрослый, а тёплый и внимательный' },
             { text: 'Если сегодня получилось на 1% спокойнее — это уже движение' },
             { text: 'Можно сначала выдохнуть, а потом воспитывать' },
             { text: 'Когда вы просите помощь, вы заботитесь о семье' },
