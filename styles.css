@@ -125,7 +125,7 @@ h1, h2, h3, h4 {
     line-height: 1.1;
     font-weight: 700;
 }
-.nav-links { display: flex; gap: 26px; }
+.nav-links { display: flex; gap: 20px; }
 .nav-links a {
     color: var(--muted);
     text-decoration: none;
@@ -292,6 +292,28 @@ h1, h2, h3, h4 {
     background: rgba(255, 248, 238, .06);
     color: rgba(255, 248, 238, .82);
     font-size: .88rem;
+}
+.hero-trust-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: -4px;
+}
+.hero-trust-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 9px 14px;
+    border: 1.5px solid rgba(184, 224, 210, .72);
+    border-radius: 999px;
+    color: var(--mint);
+    font-size: .9rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+.hero-trust-links a:hover {
+    background: rgba(184, 224, 210, .12);
+    color: var(--paper);
 }
 .hero-art {
     min-height: 420px;
