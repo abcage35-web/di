@@ -28,16 +28,17 @@
     <header class="nav">
         <div class="nav-inner">
             <a href="#top" class="brand">
-                <span class="brand-mark">Диана</span>
-                <span class="brand-text">Лукьянцева</span>
+                <span class="brand-mark">Диана Лукьянцева</span>
+                <span class="brand-text">детский психолог</span>
             </a>
             <nav class="nav-links" id="navMenu">
                 <a href="#situations">Запросы</a>
-                <a href="#trust">Почему Диана</a>
-                <a href="#first-session">Первая встреча</a>
-                <a href="#prices">Форматы</a>
+                <a href="#prices">Услуги</a>
+                <a href="#reviews">Отзывы</a>
+                <a href="#resources">Бесплатно</a>
+                <a href="#cta">Контакты</a>
             </nav>
-            <a href="#cta" class="nav-cta">Записаться</a>
+            <a href="https://t.me/dizvilook" target="_blank" rel="noopener" class="nav-cta">Telegram</a>
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="navMenu" aria-label="Меню">
                 <span></span><span></span><span></span>
             </button>
@@ -60,28 +61,28 @@
                         Детский психолог · онлайн и очно в Батуми
                     </span>
 
-                    <h1 class="hero-title">Если с ребёнком стало трудно — начнём с понятного плана</h1>
+                    <h1 class="hero-title">Помогаю детям справляться с трудностями</h1>
 
                     <p class="hero-tagline">
-                        Консультации для родителей, которые замечают тревогу, истерики, агрессию, сложности в школе или резкие перемены в поведении.
+                        Чтобы в семье стало меньше кризисов и больше спокойных дней.
                     </p>
 
                     <p class="hero-sub">
-                        Я помогу спокойно разобраться, что происходит, нужна ли работа с ребёнком и какие первые шаги можно сделать дома уже сейчас.
+                        Консультации для родителей, которые замечают тревогу, истерики, агрессию, сложности в школе или резкие перемены в поведении. Можно прийти и с мягким вопросом: понять, что уже хорошо и что ещё поможет ребёнку.
                     </p>
 
                     <div class="hero-actions">
-                        <a href="#cta" class="btn btn-primary">
-                            Бесплатный 15-минутный звонок
+                        <a href="https://t.me/dizvilook" target="_blank" rel="noopener" class="btn btn-primary">
+                            Написать в Telegram
                             <span class="btn-arrow">→</span>
                         </a>
-                        <a href="#situations" class="btn btn-ghost">Посмотреть запросы</a>
+                        <a href="#situations" class="btn btn-ghost">Выбрать запрос</a>
                     </div>
 
                     <div class="hero-quick">
                         <span>3-12 лет и подростки</span>
-                        <span>Kids Skills</span>
-                        <span>после встречи — рекомендации</span>
+                        <span>иногда помогает 1 встреча</span>
+                        <span>отчёт, рекомендации и чат</span>
                     </div>
                 </div>
 
@@ -107,7 +108,7 @@
                 <div class="section-head">
                     <span class="eyebrow">что происходит?</span>
                     <h2>Выберите, что сейчас ближе всего к вашей ситуации</h2>
-                    <p class="section-lead">Родителю не нужно заранее знать диагноз или “правильный” запрос. Достаточно заметить, что ребёнку или семье стало сложнее.</p>
+                    <p class="section-lead">Не нужен диагноз или готовая формулировка. Достаточно выбрать, где стало трудно.</p>
                 </div>
 
                 <div class="problem-grid">
@@ -148,6 +149,35 @@
                     </article>
                 </div>
 
+                <div class="issue-picker" id="issue-picker">
+                    <div>
+                        <span class="eyebrow dark">быстрый чек-лист</span>
+                        <h3>Это про моего ребёнка или про меня?</h3>
+                        <p>Отметьте пункты, которые откликаются. Сайт соберёт короткий запрос, который можно отправить Диане в Telegram.</p>
+                    </div>
+                    <div class="issue-columns">
+                        <fieldset>
+                            <legend>Про ребёнка</legend>
+                            <label><input type="checkbox" value="тревога, страхи или сон"> тревога, страхи или сон</label>
+                            <label><input type="checkbox" value="истерики, агрессия, вспышки"> истерики, агрессия, вспышки</label>
+                            <label><input type="checkbox" value="школа, уроки, мотивация"> школа, уроки, мотивация</label>
+                            <label><input type="checkbox" value="адаптация к переезду, саду или школе"> адаптация к переменам</label>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Про меня</legend>
+                            <label><input type="checkbox" value="я устаю и часто срываюсь"> устаю и срываюсь</label>
+                            <label><input type="checkbox" value="не понимаю, как реагировать"> не понимаю, как реагировать</label>
+                            <label><input type="checkbox" value="хочу понять, всё ли в порядке"> хочу понять, всё ли в порядке</label>
+                            <label><input type="checkbox" value="нужен план без чувства вины"> нужен план без чувства вины</label>
+                        </fieldset>
+                    </div>
+                    <div class="issue-result" aria-live="polite">
+                        <strong>Ваш запрос появится здесь</strong>
+                        <p data-issue-result>Выберите 1-3 пункта, и я подскажу, с чего начать.</p>
+                        <a href="#cta" class="btn btn-primary">Записаться с этим запросом <span class="btn-arrow">→</span></a>
+                    </div>
+                </div>
+
                 <div class="mini-cta">
                     <p>Если узнали свою ситуацию — можно начать с короткого звонка. За 15 минут станет понятнее, какой формат нужен.</p>
                     <a href="#cta" class="btn btn-primary">Оставить заявку <span class="btn-arrow">→</span></a>
@@ -162,11 +192,11 @@
                     <h2>Это не значит, что вы плохой родитель или с ребёнком “что-то не так”</h2>
                 </div>
                 <div class="reassurance-text">
-                    <p>Детское поведение часто говорит о напряжении, потребности, перегрузе или навыке, который пока не сформирован. На консультации мы не ищем виноватых — мы разбираемся, что поддержит ребёнка и семью.</p>
+                    <p>Поведение часто говорит о напряжении, перегрузе или навыке, который пока не сформирован. Мы не ищем виноватых — ищем, что поддержит ребёнка и семью.</p>
                     <ul class="soft-list">
                         <li>что может стоять за поведением;</li>
                         <li>как снизить напряжение дома;</li>
-                        <li>когда достаточно родительской консультации;</li>
+                        <li>когда достаточно одной родительской консультации;</li>
                         <li>когда лучше подключить ребёнка или другого специалиста.</li>
                     </ul>
                 </div>
@@ -189,23 +219,24 @@
                 <div class="trust-copy">
                     <span class="eyebrow">почему можно доверять</span>
                     <h2>Диана Лукьянцева — детский психолог и тьютор</h2>
-                    <p class="lead">Работаю бережно: на стороне ребёнка и родителей одновременно. Моя задача — перевести поведение ребёнка на понятный язык и дать семье опоры.</p>
+                    <p class="lead">Работаю бережно: на стороне ребёнка и родителей одновременно. Перевожу сложное поведение на понятный язык и даю семье опоры.</p>
                     <div class="proof-grid">
-                        <div class="proof-card"><strong>10+ лет</strong><span>работы с детьми и семьями</span></div>
-                        <div class="proof-card"><strong>1500+ часов</strong><span>обучения в детской психологии</span></div>
+                        <div class="proof-card"><strong>10+ лет</strong><span>работы с детьми разных возрастов</span></div>
+                        <div class="proof-card"><strong>1100+ ч.</strong><span>профобразования в детской психологии</span></div>
                         <div class="proof-card"><strong>Kids Skills</strong><span>подход Бена Фурмана через навыки</span></div>
-                        <div class="proof-card"><strong>Этика</strong><span>конфиденциальность, супервизии, личная терапия</span></div>
+                        <div class="proof-card"><strong>Супервизия</strong><span>минимум 1 раз в 2 недели</span></div>
                     </div>
                     <details class="education-details">
                         <summary>Посмотреть образование</summary>
                         <ul class="creds">
-                            <li><span class="creds-mark">✓</span> Санкт-Петербургский педагогический колледж № 8 — дошкольная педагогика и психология</li>
-                            <li><span class="creds-mark">✓</span> Институт «Иматон» — детская практическая психология</li>
-                            <li><span class="creds-mark">✓</span> Институт Ньюфелда — подростки и привязанность</li>
-                            <li><span class="creds-mark">✓</span> Child-Centered Play Therapy 101, Канада — игровая терапия</li>
-                            <li><span class="creds-mark">✓</span> Психодемия — Детская психология, 1500+ часов</li>
-                            <li><span class="creds-mark">✓</span> Проектирование образовательного опыта</li>
-                            <li><span class="creds-mark">✓</span> Kids Skills — Навыки ребёнка в действии</li>
+                            <li><span class="creds-mark">✓</span> Тренинг “Kid’s skills” (SFBT Kids, 2026) — 21 ч.</li>
+                            <li><span class="creds-mark">✓</span> Детский психолог (профессиональное образование, Психодемия, 2025) — 1100 ч.</li>
+                            <li><span class="creds-mark">✓</span> Основы проектирования образовательного опыта (School of Education, 2024) — 48 ч.</li>
+                            <li><span class="creds-mark">✓</span> Тьютор-наставник профессионального самоопределения и индивидуальных карьерных программ (профессиональное образование, 2022)</li>
+                            <li><span class="creds-mark">✓</span> CCPT 101: Basics in Child-Centered Play Therapy (Center for Play Therapy, 2023) — 12 ч.</li>
+                            <li><span class="creds-mark">✓</span> Специальное образование (неоконченное высшее, 4 курса, РГПУ им. Герцена, 2022)</li>
+                            <li><span class="creds-mark">✓</span> Дошкольное образование (среднее специальное, Санкт-Петербург, 2018)</li>
+                            <li><span class="creds-mark">✓</span> Минимум 1 раз в 2 недели посещаю индивидуальную и групповую супервизию.</li>
                         </ul>
                     </details>
                 </div>
@@ -222,7 +253,7 @@
 
                 <figure class="practice-photo parallax-item" data-depth="0.03">
                     <img src="images/diana-with-children.jpg" alt="Диана с детьми во время творческого занятия">
-                    <figcaption>Опыт живой работы с детьми помогает видеть не только проблему, но и сильные стороны ребёнка.</figcaption>
+                    <figcaption>Большой опыт работы с детьми разных возрастов помогает видеть не только проблему, но и сильные стороны ребёнка.</figcaption>
                 </figure>
 
                 <div class="method-grid">
@@ -256,22 +287,22 @@
                     <div class="step">
                         <div class="step-num">1</div>
                         <h3>Короткий звонок</h3>
-                        <p>15 минут бесплатно: вы рассказываете ситуацию, я уточняю детали и говорю, с чего лучше начать.</p>
+                        <p>15 минут бесплатно: вы коротко рассказываете ситуацию, я говорю, с чего начать.</p>
                     </div>
                     <div class="step">
                         <div class="step-num">2</div>
-                        <h3>Знакомство с ребёнком</h3>
-                        <p>Начинаем с пробной встречи: ребёнок спокойно знакомится со мной и понимает, подходим ли мы друг другу. Часто уже после первой встречи ребёнок соглашается продолжать.</p>
+                        <h3>Первый шаг</h3>
+                        <p>Иногда хватает одной встречи с родителем. Иногда лучше подключить ребёнка или семью.</p>
                     </div>
                     <div class="step">
                         <div class="step-num">3</div>
                         <h3>План для родителей</h3>
-                        <p>Вы получаете фокус работы: что можно делать дома, что отслеживать и сколько примерно понадобится встреч.</p>
+                        <p>Вы получаете фокус: что делать дома, что отслеживать и сколько примерно нужно встреч.</p>
                     </div>
                     <div class="step">
                         <div class="step-num">4</div>
                         <h3>Поддержка</h3>
-                        <p>После встречи — текстовые рекомендации. Между сессиями можно задавать вопросы в чате.</p>
+                        <p>После встреч — отчёт, рекомендации и возможность задавать вопросы в чате.</p>
                     </div>
                 </div>
             </div>
@@ -293,24 +324,43 @@
                         <a href="#cta" class="btn btn-primary">Записаться</a>
                     </article>
                     <article class="price-card">
-                        <span class="session-tag">родителям</span>
-                        <h3>Консультация родителя</h3>
-                        <p>Разбор ситуации, рекомендации и план первых шагов.</p>
-                        <strong>60 минут</strong>
+                        <span class="session-tag">семье</span>
+                        <h3>Разовая консультация</h3>
+                        <p>Разбор ситуации с семьёй, первые шаги и понятные рекомендации.</p>
+                        <strong>60-90 минут</strong>
                     </article>
                     <article class="price-card">
                         <span class="session-tag">ребёнку</span>
                         <h3>Индивидуальная встреча</h3>
                         <p>Пробное знакомство, игровая и разговорная работа с эмоциями, поведением, тревогой.</p>
-                        <strong>от 2700 рублей / 80 лари</strong>
+                        <strong>от 3000 рублей / 100 лари</strong>
                     </article>
                     <article class="price-card">
-                        <span class="session-tag">семье</span>
-                        <h3>Сопровождение</h3>
-                        <p>Регулярные встречи, отчёты после сессий и поддержка в чате.</p>
+                        <span class="session-tag">навыки</span>
+                        <h3>Развитие навыков ребёнка</h3>
+                        <p>От 4 встреч: переводим трудность в навык и тренируем его через поддержку.</p>
+                        <strong>от 4 сессий</strong>
+                    </article>
+                    <article class="price-card">
+                        <span class="session-tag">ясность</span>
+                        <h3>Диагностика + рекомендации</h3>
+                        <p>Смотрим особенности ребёнка, сильные стороны, риски и ближайшие шаги.</p>
                         <strong>формат обсуждаем</strong>
                     </article>
+                    <article class="price-card">
+                        <span class="session-tag">школа</span>
+                        <h3>Учебная самостоятельность</h3>
+                        <p>Умение учиться, уроки, планирование, мотивация и тайм-менеджмент.</p>
+                        <strong>8 сессий / месяц</strong>
+                    </article>
+                    <article class="price-card">
+                        <span class="session-tag">стратегия</span>
+                        <h3>Индивидуальная образовательная стратегия</h3>
+                        <p>План обучения с опорой на сильные стороны, особенности и цели семьи.</p>
+                        <strong>по запросу</strong>
+                    </article>
                 </div>
+                <p class="price-note">Любой продукт включает отчёт после каждой встречи, рекомендации и доступность в чате.</p>
             </div>
         </section>
 
@@ -323,18 +373,27 @@
 
                 <div class="reviews-grid">
                     <article class="review">
+                        <div class="review-icon" aria-hidden="true">
+                            <svg viewBox="0 0 80 80"><path d="M18 44 C16 24 28 12 43 16 C58 20 66 36 58 52 C50 68 24 66 18 44Z"/><path d="M28 42 L37 51 L54 30"/></svg>
+                        </div>
                         <div class="stars">★★★★★</div>
-                        <p>“Мы впервые поняли, что ребёнок не вредничает, а не справляется с тревогой. Стало меньше крика и больше понятных шагов”.</p>
+                        <p>“У нас стало меньше скандалов и больше времени для классных дел вместе. Я перестала тушить каждый пожар криком”.</p>
                         <div class="review-author"><div class="ra-avatar" style="background:#B8E0D2"></div><div><strong>Мама Димы</strong></div></div>
                     </article>
                     <article class="review">
+                        <div class="review-icon" aria-hidden="true">
+                            <svg viewBox="0 0 80 80"><path d="M20 24 Q40 8 60 24 L60 58 Q40 70 20 58Z"/><path d="M30 40 Q40 50 50 40"/><path d="M31 31 L31 31.5 M49 31 L49 31.5"/></svg>
+                        </div>
                         <div class="stars">★★★★★</div>
-                        <p>“После консультаций стало легче говорить с подростком без давления. Появилось ощущение, что мы снова команда”.</p>
+                        <p>“Раньше уроки были ежедневной битвой. Сейчас сын чаще сам садится за дела, а мы заранее договариваемся, где ему нужна помощь”.</p>
                         <div class="review-author"><div class="ra-avatar" style="background:#C8B6E2"></div><div><strong>Мама Вероники</strong></div></div>
                     </article>
                     <article class="review">
+                        <div class="review-icon" aria-hidden="true">
+                            <svg viewBox="0 0 80 80"><path d="M24 58 L36 18 L44 18 L56 58Z"/><path d="M30 48 Q40 56 50 48"/><path d="M34 33 L30 38 M46 33 L50 38"/></svg>
+                        </div>
                         <div class="stars">★★★★★</div>
-                        <p>“Очень ценно, что после встречи был текстовый план. Я не вышла с ощущением ‘ну поговорили’, а знала, что делать дома”.</p>
+                        <p>“Раньше он был невыносим, как вулкан. Теперь вся семья знает, как помочь ему, когда ‘вулкан’ начинает взрываться”.</p>
                         <div class="review-author"><div class="ra-avatar" style="background:#A7C957"></div><div><strong>Андрей и Анастасия</strong><span>родительская консультация</span></div></div>
                     </article>
                 </div>
@@ -342,12 +401,55 @@
             </div>
         </section>
 
+        <section class="resources" id="resources">
+            <div class="container">
+                <div class="section-head center">
+                    <span class="eyebrow">можно забрать бесплатно</span>
+                    <h2>Ресурсная полочка маленьких побед</h2>
+                    <p class="section-lead">ОРКТ и нарративная практика помогают замечать не только проблему, но и исключения: когда уже получилось хоть чуть-чуть. Соберите полочку и распечатайте её для дома.</p>
+                </div>
+
+                <div class="resource-builder">
+                    <div class="resource-form">
+                        <label class="field">
+                            <span>Маленькая победа ребёнка</span>
+                            <input type="text" id="winInput" placeholder="Например: сам начал уроки 10 минут">
+                        </label>
+                        <label class="field">
+                            <span>Что помогло?</span>
+                            <input type="text" id="supportInput" placeholder="Например: таймер, пауза, моя спокойная подсказка">
+                        </label>
+                        <button type="button" class="btn btn-primary btn-block" id="addWin">Положить на полочку</button>
+                        <button type="button" class="btn btn-ghost btn-block print-btn" id="printShelf">Распечатать карту</button>
+                        <a class="direct-contact" href="#cta">Хочу получить такую карту и рекомендации</a>
+                    </div>
+                    <div class="shelf-card" id="shelfCard">
+                        <div class="shelf-top">
+                            <span class="medal" aria-hidden="true">★</span>
+                            <div>
+                                <h3>Полочка достижений</h3>
+                                <p>Здесь живут маленькие победы, которые помогают семье двигаться дальше.</p>
+                            </div>
+                        </div>
+                        <ul class="win-list" id="winList">
+                            <li><strong>Победа:</strong> заметили, что стало чуть легче. <span>Опора: вы уже ищете помощь.</span></li>
+                        </ul>
+                        <div class="trophy-row" aria-hidden="true">
+                            <span class="trophy medal-shape"></span>
+                            <span class="trophy cup-shape"></span>
+                            <span class="trophy star-shape"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="cta" id="cta">
             <div class="container cta-inner">
                 <div class="cta-text">
                     <span class="eyebrow">первый шаг</span>
-                    <h2>Оставьте заявку на бесплатный 15-минутный звонок</h2>
-                    <p>Напишите коротко, что происходит. Я вернусь с уточняющими вопросами и предложу ближайший понятный шаг.</p>
+                    <h2>Напишите Диане в Telegram</h2>
+                    <p>Запрос не хранится на сайте. После отправки текст заявки копируется, а вы сразу переходите в Telegram.</p>
 
                     <ul class="cta-bullets">
                         <li><span>✓</span> Можно без подробностей — достаточно пары предложений</li>
@@ -358,6 +460,18 @@
 
                 <form class="lead-form" id="leadForm" novalidate>
                     <h3>Короткая заявка</h3>
+                    <label class="field">
+                        <span>Что ближе всего?</span>
+                        <select name="topic">
+                            <option value="">Выбрать запрос</option>
+                            <option>Тревога, страхи, сон</option>
+                            <option>Истерики, агрессия, протест</option>
+                            <option>Учёба, уроки, мотивация</option>
+                            <option>Переезд, адаптация, перемены</option>
+                            <option>Хочу понять, всё ли в порядке</option>
+                            <option>Нужна образовательная стратегия</option>
+                        </select>
+                    </label>
                     <label class="field">
                         <span>Как вас зовут?</span>
                         <input type="text" name="name" required placeholder="Например, Мария">
@@ -375,11 +489,11 @@
                         <textarea name="message" rows="3" placeholder="Например: истерики перед садиком, тревога, школа, сон"></textarea>
                     </label>
                     <button type="submit" class="btn btn-primary btn-block">
-                        Отправить в Telegram
+                        Скопировать и открыть Telegram
                         <span class="btn-arrow">→</span>
                     </button>
                     <a class="direct-contact" href="https://t.me/dizvilook" target="_blank" rel="noopener">Или написать напрямую: @dizvilook</a>
-                    <p class="form-privacy">После нажатия текст заявки скопируется. Затем откройте Telegram кнопкой ниже, вставьте сообщение и отправьте его Диане.</p>
+                    <p class="form-privacy">После нажатия вставьте готовый текст в чат и отправьте Диане.</p>
                 </form>
             </div>
         </section>
@@ -410,7 +524,7 @@
                     </details>
                     <details class="faq-item">
                         <summary>Когда нужен другой специалист?</summary>
-                        <p>Если вижу, что нужна консультация невролога, логопеда, нейропсихолога или врача, я честно скажу об этом и помогу сориентироваться.</p>
+                        <p>Если вижу, что нужна консультация невролога, логопеда, нейропсихолога или врача, я честно скажу об этом, помогу сориентироваться и поделюсь контактами проверенных коллег.</p>
                     </details>
                 </div>
             </div>
@@ -434,13 +548,18 @@
         </div>
     </footer>
 
-    <!-- Реплика кролика -->
-    <div class="bunny-bubble" aria-hidden="true">
+    <a class="sticky-telegram" href="https://t.me/dizvilook" target="_blank" rel="noopener">
+        <span>Telegram</span>
+    </a>
+
+    <!-- Реплика Фуфика -->
+    <div class="bunny-bubble" aria-live="polite">
         <span data-bunny-quote>Сегодня вы уже хороший родитель — правда-правда</span>
+        <a data-bunny-action href="#cta">Записаться</a>
     </div>
 
-    <!-- Рыжий кролик: только голова, выглядывает из нижнего края -->
-    <div class="bunny-peek" role="button" tabindex="0" aria-label="Подсказка от кролика">
+    <!-- Фуфик: только голова, выглядывает из нижнего края -->
+    <div class="bunny-peek" role="button" tabindex="0" aria-label="Подсказка от Фуфика">
         <svg viewBox="0 0 200 188" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#roughen)">
                 <!-- левое ухо -->

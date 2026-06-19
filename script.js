@@ -33,6 +33,7 @@
 
     function onScroll() {
         scrollY = window.scrollY;
+        document.body.classList.toggle('has-scrolled', scrollY > 280);
         if (!ticking && !reduceMotion) {
             requestAnimationFrame(updateParallax);
             ticking = true;
@@ -48,15 +49,16 @@
         }
     }
 
+    window.addEventListener('scroll', onScroll, { passive: true });
     if (!reduceMotion) {
-        window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('mousemove', onMouse, { passive: true });
         updateParallax();
     }
+    document.body.classList.toggle('has-scrolled', scrollY > 280);
 
     // ---- Scroll reveal ----
     const reveals = document.querySelectorAll(
-        '.section-head, .pain-card, .problem-card, .reassurance-card, .reassurance-text, .proof-card, .practice-photo, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .faq-item, .pain-cta, .mini-cta, .approach-card, .principle, .session-card, .price-card, .atmosphere, .story-card'
+        '.section-head, .pain-card, .problem-card, .issue-picker, .reassurance-card, .reassurance-text, .proof-card, .practice-photo, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .faq-item, .pain-cta, .mini-cta, .approach-card, .principle, .session-card, .price-card, .atmosphere, .story-card, .resource-form, .shelf-card, .price-note'
     );
     reveals.forEach((el) => el.classList.add('reveal'));
 
@@ -76,6 +78,7 @@
     // ---- Lead form ----
     const form = document.getElementById('leadForm');
     const telegramUrl = 'https://t.me/dizvilook';
+    let selectedIssueText = '';
 
     function setFormStatus(message, isError, showTelegramLink) {
         let status = form.querySelector('.form-status');
@@ -117,28 +120,107 @@
         });
     }
 
-    // ---- Bunny speech bubble (по клику) ----
+    // ---- Issue picker ----
+    const issuePicker = document.getElementById('issue-picker');
+    if (issuePicker) {
+        const issueInputs = issuePicker.querySelectorAll('input[type="checkbox"]');
+        const issueResult = issuePicker.querySelector('[data-issue-result]');
+        const messageField = form ? form.message : null;
+
+        function updateIssueResult() {
+            const selected = Array.from(issueInputs)
+                .filter((input) => input.checked)
+                .map((input) => input.value);
+
+            if (!selected.length) {
+                selectedIssueText = '';
+                issueResult.textContent = 'Выберите 1-3 пункта, и я подскажу, с чего начать.';
+                return;
+            }
+
+            const visible = selected.slice(0, 4).join(', ');
+            selectedIssueText = `Похоже, сейчас важнее всего: ${visible}.`;
+            issueResult.textContent = `${selectedIssueText} С этим можно прийти на короткий звонок.`;
+
+            if (messageField && !messageField.value.trim()) {
+                messageField.value = selectedIssueText;
+            }
+        }
+
+        issueInputs.forEach((input) => input.addEventListener('change', updateIssueResult));
+    }
+
+    // ---- Resource shelf ----
+    const addWinBtn = document.getElementById('addWin');
+    const printShelfBtn = document.getElementById('printShelf');
+    const winInput = document.getElementById('winInput');
+    const supportInput = document.getElementById('supportInput');
+    const winList = document.getElementById('winList');
+
+    if (addWinBtn && winInput && supportInput && winList) {
+        addWinBtn.addEventListener('click', () => {
+            const win = winInput.value.trim();
+            const support = supportInput.value.trim();
+            if (!win) {
+                winInput.focus();
+                return;
+            }
+
+            const item = document.createElement('li');
+            const strong = document.createElement('strong');
+            strong.textContent = 'Победа: ';
+            item.appendChild(strong);
+            item.appendChild(document.createTextNode(win));
+
+            const span = document.createElement('span');
+            span.textContent = support ? `Опора: ${support}` : 'Опора: заметили и сохранили эту победу.';
+            item.appendChild(span);
+
+            winList.appendChild(item);
+            winInput.value = '';
+            supportInput.value = '';
+            winInput.focus();
+        });
+    }
+
+    if (printShelfBtn) {
+        printShelfBtn.addEventListener('click', () => window.print());
+    }
+
+    // ---- Fufik speech bubble ----
     const bunnyQuote = document.querySelector('[data-bunny-quote]');
+    const bunnyAction = document.querySelector('[data-bunny-action]');
     const bunny = document.querySelector('.bunny-peek');
     if (bunnyQuote && bunny) {
         const bubble = bunnyQuote.closest('.bunny-bubble');
         const phrases = [
-            'Сегодня вы уже хороший родитель — правда-правда',
-            'Иногда обнять полезнее, чем объяснить',
-            'Можно быть рядом, а не идеальным',
-            'Спросите ребёнка: «как ты сейчас?» — просто так',
-            'Слушать важнее, чем отвечать',
-            'Капризы — это не «плохо». Это сигнал.',
-            'Глубокий вдох — и вы снова с ребёнком'
+            { text: 'Сегодня вы уже хороший родитель — правда-правда' },
+            { text: 'Иногда одна спокойная пауза уже меняет вечер' },
+            { text: 'Можно быть рядом, а не идеальным' },
+            { text: 'Спросите ребёнка: «как ты сейчас?» — просто так' },
+            { text: 'Сложное поведение — это сигнал, а не приговор' },
+            { text: 'Соберите ресурсную полочку и заберите медаль', href: '#resources', label: 'Собрать полочку' },
+            { text: 'На бесплатном звонке можно коротко свериться', href: '#cta', label: 'Записаться' },
+            { text: 'Вы уже заметили трудность. Это важный первый шаг' }
         ];
         let qi = -1;
         let hideTimer = null;
         function showNextQuote() {
             qi = (qi + 1) % phrases.length;
-            bunnyQuote.textContent = phrases[qi];
+            const phrase = phrases[qi];
+            bunnyQuote.textContent = phrase.text;
+            if (bunnyAction) {
+                if (phrase.href) {
+                    bunnyAction.href = phrase.href;
+                    bunnyAction.textContent = phrase.label || 'Перейти';
+                    bubble.classList.add('has-action');
+                } else {
+                    bubble.classList.remove('has-action');
+                }
+            }
             bubble.classList.add('show');
             clearTimeout(hideTimer);
-            hideTimer = setTimeout(() => bubble.classList.remove('show'), 6500);
+            hideTimer = setTimeout(() => bubble.classList.remove('show'), 8000);
         }
         bunny.addEventListener('click', showNextQuote);
         bunny.addEventListener('keydown', (e) => {
@@ -147,6 +229,8 @@
                 showNextQuote();
             }
         });
+        window.setTimeout(showNextQuote, 3000);
+        window.setInterval(showNextQuote, 30000);
     }
 
     if (form) {
@@ -162,6 +246,7 @@
             }
 
             const age = form.age.value.trim();
+            const topic = form.topic ? form.topic.value.trim() : '';
             const message = form.message.value.trim();
             const leadText = [
                 'Здравствуйте, Диана! Хочу записаться на бесплатный 15-минутный звонок.',
@@ -169,12 +254,16 @@
                 `Имя: ${name}`,
                 `Контакт: ${contact}`,
                 age ? `Возраст ребёнка: ${age}` : '',
+                topic ? `Запрос: ${topic}` : '',
+                selectedIssueText ? `Чек-лист: ${selectedIssueText}` : '',
                 message ? `Что беспокоит: ${message}` : '',
             ].filter(Boolean).join('\n');
 
+            const opened = window.open(telegramUrl, '_blank', 'noopener');
+
             try {
                 await navigator.clipboard.writeText(leadText);
-                setFormStatus('Текст заявки скопирован. Теперь откройте Telegram, вставьте сообщение в чат и отправьте его Диане.', false, true);
+                setFormStatus('Текст заявки скопирован. Вставьте его в открывшийся чат Telegram и отправьте Диане.', false, !opened);
             } catch (_) {
                 setFormStatus('Не получилось скопировать текст автоматически. Откройте Telegram и напишите Диане коротко ваш запрос и контакт.', true, true);
             }
