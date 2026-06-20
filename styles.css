@@ -1008,6 +1008,13 @@ h1, h2, h3, h4 {
     color: var(--navy);
     font-size: 1.12rem;
 }
+.adult-choice-set h4 {
+    margin: 14px 0 10px;
+    color: rgba(22, 38, 63, .72);
+    font-size: .92rem;
+    font-weight: 900;
+}
+.adult-choice-set:first-of-type h4 { margin-top: 0; }
 .resource-chips {
     display: flex;
     flex-wrap: wrap;

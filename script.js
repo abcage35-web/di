@@ -200,6 +200,7 @@
     const parentShelfWrap = document.querySelector('[data-parent-shelf-wrap]');
     const momShelfWrap = document.querySelector('[data-mom-shelf]');
     const dadShelfWrap = document.querySelector('[data-dad-shelf]');
+    const adultOptionGroups = document.querySelectorAll('[data-parent-options]');
     const parentMedal = document.querySelector('.parent-medal');
     const medalTitle = document.querySelector('[data-medal-title]');
     const medalNote = document.querySelector('[data-medal-note]');
@@ -245,6 +246,7 @@
         if (momShelfWrap) momShelfWrap.hidden = !roles.includes('мама');
         if (dadShelfWrap) dadShelfWrap.hidden = !roles.includes('папа');
         if (parentShelfWrap) parentShelfWrap.hidden = roles.includes('мама') || roles.includes('папа');
+        updateAdultOptionGroups(roles);
         if (treasureSubtitle) {
             const roleText = roles.length ? joinText(roles) : '';
             const who = parent && roleText
@@ -292,10 +294,20 @@
         }
     }
 
-    function getParentChipText(chip, target) {
-        if (target === momShelf && chip.dataset.shelfTextMom) return chip.dataset.shelfTextMom;
-        if (target === dadShelf && chip.dataset.shelfTextDad) return chip.dataset.shelfTextDad;
-        return chip.dataset.shelfText || chip.textContent;
+    function updateAdultOptionGroups(roles = getFamilyRoles()) {
+        adultOptionGroups.forEach((group) => {
+            const type = group.dataset.parentOptions;
+            if (type === 'generic') group.hidden = roles.includes('мама') || roles.includes('папа');
+            if (type === 'mom') group.hidden = !roles.includes('мама');
+            if (type === 'dad') group.hidden = !roles.includes('папа');
+        });
+    }
+
+    function getChipTargets(chip) {
+        if (chip.dataset.shelfTarget === 'parent') return getParentTargets();
+        if (chip.dataset.shelfTarget === 'mom') return momShelf ? [momShelf] : [];
+        if (chip.dataset.shelfTarget === 'dad') return dadShelf ? [dadShelf] : [];
+        return childShelf ? [childShelf] : [];
     }
 
     [childName, parentName].forEach((input) => {
@@ -344,10 +356,10 @@
 
     document.querySelectorAll('.resource-chip').forEach((chip) => {
         chip.addEventListener('click', () => {
-            const targets = chip.dataset.shelfTarget === 'parent' ? getParentTargets() : [childShelf];
+            const targets = getChipTargets(chip);
             let added = false;
             targets.forEach((target) => {
-                added = addShelfItem(target, getParentChipText(chip, target)) || added;
+                added = addShelfItem(target, chip.dataset.shelfText || chip.textContent) || added;
             });
             if (added) {
                 chip.classList.add('is-added');

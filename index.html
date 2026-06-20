@@ -413,16 +413,35 @@
 
                         <div class="resource-choice-group">
                             <h3>3. Выберите суперсилы взрослых</h3>
-                            <div class="resource-chips">
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею замечать, когда всем нужна пауза" data-shelf-text-mom="мама замечает, когда ребёнку нужна пауза" data-shelf-text-dad="папа замечает, когда семье нужен спокойный темп">замечаю паузу</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я могу говорить спокойнее, когда есть план" data-shelf-text-mom="мама может говорить спокойнее, когда есть план" data-shelf-text-dad="папа помогает вернуться к плану без давления">говорю спокойнее</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я вижу не только трудность, но и старание ребёнка" data-shelf-text-mom="мама видит старание ребёнка даже в трудный день" data-shelf-text-dad="папа замечает усилия ребёнка и поддерживает их">вижу старание</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею просить поддержку, когда тяжело" data-shelf-text-mom="мама умеет просить поддержку, когда тяжело" data-shelf-text-dad="папа может подключиться и разделить нагрузку">прошу поддержку</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я уже ищу решения, а не остаюсь один на один" data-shelf-text-mom="мама уже ищет решения и замечает, что помогает" data-shelf-text-dad="папа помогает пробовать решения маленькими шагами">ищу решения</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="у нашей семьи есть моменты, когда получается быть командой" data-shelf-text-mom="мама помогает семье слышать друг друга" data-shelf-text-dad="папа помогает семье действовать как команда">мы команда</button>
+                            <div class="adult-choice-set" data-parent-options="generic">
+                                <h4>Суперсила родителя на выбор</h4>
+                                <div class="resource-chips">
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею замечать, когда всем нужна пауза">замечаю паузу</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я могу говорить спокойнее, когда есть план">говорю спокойнее</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я вижу не только трудность, но и старание ребёнка">вижу старание</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею просить поддержку, когда тяжело">прошу поддержку</button>
+                                </div>
+                            </div>
+                            <div class="adult-choice-set" data-parent-options="mom" hidden>
+                                <h4>Суперсила мамы на выбор</h4>
+                                <div class="resource-chips">
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="mom" data-shelf-text="мама замечает, когда ребёнку нужна пауза">замечает паузу</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="mom" data-shelf-text="мама может говорить спокойнее, когда есть план">говорит спокойнее</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="mom" data-shelf-text="мама видит старание ребёнка даже в трудный день">видит старание</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="mom" data-shelf-text="мама умеет просить поддержку, когда тяжело">просит поддержку</button>
+                                </div>
+                            </div>
+                            <div class="adult-choice-set" data-parent-options="dad" hidden>
+                                <h4>Суперсила папы на выбор</h4>
+                                <div class="resource-chips">
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="dad" data-shelf-text="папа замечает, когда семье нужен спокойный темп">держит спокойный темп</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="dad" data-shelf-text="папа помогает вернуться к плану без давления">возвращает к плану</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="dad" data-shelf-text="папа замечает усилия ребёнка и поддерживает их">поддерживает усилия</button>
+                                    <button type="button" class="resource-chip parent-chip" data-shelf-target="dad" data-shelf-text="папа может подключиться и разделить нагрузку">разделяет нагрузку</button>
+                                </div>
                             </div>
                             <label class="field">
-                                <span>Добавить своё про взрослого или семью</span>
+                                <span>Добавить своё общее про взрослого или семью</span>
                                 <input type="text" id="parentCustom" placeholder="Например: умею обнимать вместо спора">
                             </label>
                             <button type="button" class="btn btn-primary btn-block" id="addParentCard">Добавить в сундук взрослого</button>
