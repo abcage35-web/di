@@ -414,12 +414,12 @@
                         <div class="resource-choice-group">
                             <h3>3. Выберите суперсилы взрослых</h3>
                             <div class="resource-chips">
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею замечать, когда всем нужна пауза">замечаю паузу</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я могу говорить спокойнее, когда есть план">говорю спокойнее</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я вижу не только трудность, но и старание ребёнка">вижу старание</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею просить поддержку, когда тяжело">прошу поддержку</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я уже ищу решения, а не остаюсь один на один">ищу решения</button>
-                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="у нашей семьи есть моменты, когда получается быть командой">мы команда</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею замечать, когда всем нужна пауза" data-shelf-text-mom="мама замечает, когда ребёнку нужна пауза" data-shelf-text-dad="папа замечает, когда семье нужен спокойный темп">замечаю паузу</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я могу говорить спокойнее, когда есть план" data-shelf-text-mom="мама может говорить спокойнее, когда есть план" data-shelf-text-dad="папа помогает вернуться к плану без давления">говорю спокойнее</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я вижу не только трудность, но и старание ребёнка" data-shelf-text-mom="мама видит старание ребёнка даже в трудный день" data-shelf-text-dad="папа замечает усилия ребёнка и поддерживает их">вижу старание</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею просить поддержку, когда тяжело" data-shelf-text-mom="мама умеет просить поддержку, когда тяжело" data-shelf-text-dad="папа может подключиться и разделить нагрузку">прошу поддержку</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я уже ищу решения, а не остаюсь один на один" data-shelf-text-mom="мама уже ищет решения и замечает, что помогает" data-shelf-text-dad="папа помогает пробовать решения маленькими шагами">ищу решения</button>
+                                <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="у нашей семьи есть моменты, когда получается быть командой" data-shelf-text-mom="мама помогает семье слышать друг друга" data-shelf-text-dad="папа помогает семье действовать как команда">мы команда</button>
                             </div>
                             <label class="field">
                                 <span>Добавить своё про взрослого или семью</span>
@@ -439,6 +439,7 @@
                                 <label><input type="radio" name="parentMedal" value="Лучший родитель" data-medal-note="потому что замечаю, ищу поддержку и продолжаю быть рядом" data-medal-shape="round" checked> лучший родитель</label>
                                 <label><input type="radio" name="parentMedal" value="Лучшая мама" data-medal-note="потому что рядом есть тепло, внимание и забота" data-medal-shape="heart"> лучшая мама</label>
                                 <label><input type="radio" name="parentMedal" value="Лучший папа" data-medal-note="потому что рядом есть опора, внимание и забота" data-medal-shape="shield"> лучший папа</label>
+                                <label><input type="radio" name="parentMedal" value="Лучшие родители" data-medal-note="потому что вы вместе ищете опоры и помогаете семье справляться" data-medal-shape="parents" data-parent-medal> лучшие родители</label>
                             </div>
                         </div>
                         <button type="button" class="btn btn-ghost btn-block print-btn" id="printShelf">Распечатать карту</button>
@@ -462,13 +463,13 @@
                             <section class="cabinet-shelf mom-shelf" data-mom-shelf hidden>
                                 <h4>Суперсилы мамы</h4>
                                 <ul class="shelf-list" id="momShelf">
-                                    <li>уже ищет, как семье стало бы легче</li>
+                                    <li>замечает, когда ребёнку нужна пауза</li>
                                 </ul>
                             </section>
                             <section class="cabinet-shelf dad-shelf" data-dad-shelf hidden>
                                 <h4>Суперсилы папы</h4>
                                 <ul class="shelf-list" id="dadShelf">
-                                    <li>уже ищет, как семье стало бы легче</li>
+                                    <li>помогает семье вернуться к понятному плану</li>
                                 </ul>
                             </section>
                             <section class="cabinet-shelf parent-shelf" data-parent-shelf-wrap>

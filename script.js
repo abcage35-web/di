@@ -254,6 +254,7 @@
                 ? `${who}: выберите опоры и распечатайте карту для дома.`
                 : 'Выберите опоры и распечатайте карту для дома.';
         }
+        syncParentsMedal(roles);
     }
 
     function getParentTargets() {
@@ -271,9 +272,30 @@
         if (medalTitle) medalTitle.textContent = selected.value;
         if (medalNote) medalNote.textContent = selected.dataset.medalNote || '';
         if (parentMedal) {
-            parentMedal.classList.remove('medal-round', 'medal-heart', 'medal-shield');
+            parentMedal.classList.remove('medal-round', 'medal-heart', 'medal-shield', 'medal-parents');
             parentMedal.classList.add(`medal-${selected.dataset.medalShape || 'round'}`);
         }
+    }
+
+    function syncParentsMedal(roles = getFamilyRoles()) {
+        const parentsOption = document.querySelector('[data-parent-medal]');
+        if (!parentsOption) return;
+        if (roles.includes('мама') && roles.includes('папа')) {
+            parentsOption.checked = true;
+            updateMedal();
+        } else if (parentsOption.checked) {
+            const fallback = document.querySelector('input[name="parentMedal"][data-medal-shape="round"]');
+            if (fallback) {
+                fallback.checked = true;
+                updateMedal();
+            }
+        }
+    }
+
+    function getParentChipText(chip, target) {
+        if (target === momShelf && chip.dataset.shelfTextMom) return chip.dataset.shelfTextMom;
+        if (target === dadShelf && chip.dataset.shelfTextDad) return chip.dataset.shelfTextDad;
+        return chip.dataset.shelfText || chip.textContent;
     }
 
     [childName, parentName].forEach((input) => {
@@ -325,7 +347,7 @@
             const targets = chip.dataset.shelfTarget === 'parent' ? getParentTargets() : [childShelf];
             let added = false;
             targets.forEach((target) => {
-                added = addShelfItem(target, chip.dataset.shelfText || chip.textContent) || added;
+                added = addShelfItem(target, getParentChipText(chip, target)) || added;
             });
             if (added) {
                 chip.classList.add('is-added');
