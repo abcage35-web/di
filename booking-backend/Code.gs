@@ -19,6 +19,7 @@ function json_(data) {
 function doGet(e) {
   const params = (e && e.parameter) || {};
   const action = String(params.action || 'health');
+
   if (action === 'slots') {
     const days = clampNumber_(Number(params.days || DEFAULT_DAYS_AHEAD), 1, 45);
     return json_({ ok: true, slots: getAvailableSlots_(days) });
@@ -201,9 +202,8 @@ function parsePayload_(e) {
 function getCalendar_() {
   const props = PropertiesService.getScriptProperties();
   const calendarId = props.getProperty('CALENDAR_ID');
-  const calendar = calendarId
-    ? CalendarApp.getCalendarById(calendarId)
-    : CalendarApp.getDefaultCalendar();
+  const configuredCalendar = calendarId ? CalendarApp.getCalendarById(calendarId) : null;
+  const calendar = configuredCalendar || CalendarApp.getDefaultCalendar();
   if (!calendar) {
     throw publicError_('CALENDAR_NOT_FOUND', 'Календарь не найден.');
   }
@@ -240,8 +240,13 @@ function formatSlot_(date) {
 
 function getConfigStatus_() {
   const props = PropertiesService.getScriptProperties();
+  const calendarId = props.getProperty('CALENDAR_ID');
+  const configuredCalendar = calendarId ? CalendarApp.getCalendarById(calendarId) : null;
+  const defaultCalendar = CalendarApp.getDefaultCalendar();
   return {
-    calendar: Boolean(props.getProperty('CALENDAR_ID') || CalendarApp.getDefaultCalendar()),
+    calendar: Boolean(configuredCalendar || defaultCalendar),
+    configuredCalendarFound: Boolean(configuredCalendar),
+    usingDefaultCalendar: Boolean(calendarId && !configuredCalendar && defaultCalendar),
     telegramToken: Boolean(props.getProperty('TELEGRAM_BOT_TOKEN')),
     telegramChat: Boolean(props.getProperty('TELEGRAM_CHAT_ID')),
     timeZone: getTimeZone_(),
