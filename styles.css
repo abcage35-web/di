@@ -772,7 +772,7 @@ h1, h2, h3, h4 {
     font-weight: 800;
 }
 
-.reviews-grid { grid-template-columns: repeat(3, 1fr); }
+.reviews-grid { grid-template-columns: repeat(4, 1fr); }
 .review { padding: 28px 26px; }
 .review-icon {
     width: 62px;
@@ -822,6 +822,28 @@ h1, h2, h3, h4 {
     line-height: 1.45;
 }
 .review-points strong { color: var(--navy); }
+.reviews-resource-cta {
+    max-width: 860px;
+    margin: 30px auto 0;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border: 2px solid var(--navy);
+    border-radius: 18px;
+    background: var(--paper);
+    box-shadow: 5px 5px 0 var(--mint);
+}
+.reviews-resource-cta p {
+    margin: 0;
+    color: var(--navy-deep);
+    font-weight: 800;
+}
+.reviews-resource-cta .btn {
+    flex: 0 0 auto;
+    padding: 13px 20px;
+}
 .reviews-note {
     max-width: 520px;
     margin: 28px auto 0;
@@ -1603,6 +1625,11 @@ body.has-scrolled .sticky-telegram {
     }
     .nav-links a:last-child { border-bottom: 0; }
     .nav.open .nav-links { opacity: 1; visibility: visible; transform: translateY(0); }
+    .reviews-resource-cta {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .reviews-resource-cta .btn { width: 100%; }
 }
 @media (max-width: 620px) {
     .problem-grid, .reviews-grid, .price-grid, .steps, .method-grid {
