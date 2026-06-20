@@ -721,7 +721,9 @@ h1, h2, h3, h4 {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    transform: none !important;
 }
+.price-card:hover { transform: translateY(-4px) !important; }
 .price-card.featured {
     background: var(--pink-soft);
     box-shadow: 7px 7px 0 var(--lilac);
@@ -740,6 +742,17 @@ h1, h2, h3, h4 {
     color: rgba(22, 38, 63, .78);
     font-size: .9rem;
     font-weight: 800;
+    width: 100%;
+}
+.service-fit summary {
+    cursor: pointer;
+    color: var(--navy);
+}
+.service-fit p {
+    margin: 8px 0 0;
+    color: rgba(22, 38, 63, .72);
+    font-size: .88rem;
+    font-weight: 700;
 }
 .price-card .btn {
     width: 100%;
@@ -783,49 +796,32 @@ h1, h2, h3, h4 {
     stroke-linejoin: round;
 }
 .review-icon svg path:not(:first-child) { fill: none; }
-.stars {
+.review-case {
+    display: inline-flex;
     margin-bottom: 12px;
-    color: var(--mint);
-    letter-spacing: 3px;
-    text-shadow: 1px 1px 0 var(--coral);
+    color: var(--coral);
+    font-size: .86rem;
+    font-weight: 900;
+}
+.review h3 {
+    margin-bottom: 12px;
+    color: var(--navy);
+    font-size: 1.2rem;
 }
 .review p { color: var(--ink); }
-.review-author { display: flex; align-items: center; gap: 12px; }
-.ra-avatar {
-    position: relative;
-    width: 46px;
-    height: 46px;
-    border: 2px solid var(--navy);
-    border-radius: 50%;
-    flex: 0 0 auto;
-    overflow: hidden;
+.review-points {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+    display: grid;
+    gap: 8px;
 }
-.ra-avatar::before,
-.ra-avatar::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+.review-points li {
+    color: rgba(22, 38, 63, .82);
+    font-size: .95rem;
+    line-height: 1.45;
 }
-.ra-avatar::before {
-    top: 8px;
-    width: 13px;
-    height: 13px;
-    border: 2px solid var(--navy);
-    border-radius: 50%;
-    background: var(--paper);
-    box-shadow: -7px 15px 0 -5px var(--navy), 7px 15px 0 -5px var(--navy);
-}
-.ra-avatar::after {
-    top: 25px;
-    width: 24px;
-    height: 18px;
-    border: 3px solid var(--navy);
-    border-bottom: 0;
-    border-radius: 18px 18px 0 0;
-    background: rgba(255, 248, 238, .5);
-}
-.review-author strong { display: block; color: var(--navy); font-size: .95rem; }
+.review-points strong { color: var(--navy); }
 .reviews-note {
     max-width: 520px;
     margin: 28px auto 0;
