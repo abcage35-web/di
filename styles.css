@@ -1710,6 +1710,7 @@ body.has-scrolled .sticky-telegram {
         background: var(--paper);
     }
     .resources .section-head { display: none; }
+    [data-treasure-subtitle] { display: none !important; }
     .container { width: 100%; }
     .resource-builder { display: block; }
     .shelf-card {
