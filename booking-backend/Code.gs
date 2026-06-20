@@ -202,12 +202,19 @@ function parsePayload_(e) {
 function getCalendar_() {
   const props = PropertiesService.getScriptProperties();
   const calendarId = props.getProperty('CALENDAR_ID');
-  const configuredCalendar = calendarId ? CalendarApp.getCalendarById(calendarId) : null;
-  const calendar = configuredCalendar || CalendarApp.getDefaultCalendar();
-  if (!calendar) {
-    throw publicError_('CALENDAR_NOT_FOUND', 'Календарь не найден.');
+  if (calendarId) {
+    const configuredCalendar = CalendarApp.getCalendarById(calendarId);
+    if (!configuredCalendar) {
+      throw publicError_('CALENDAR_NOT_FOUND', 'Заданный календарь недоступен аккаунту Apps Script.');
+    }
+    return configuredCalendar;
   }
-  return calendar;
+
+  const defaultCalendar = CalendarApp.getDefaultCalendar();
+  if (!defaultCalendar) {
+    throw publicError_('CALENDAR_NOT_FOUND', 'Основной календарь не найден.');
+  }
+  return defaultCalendar;
 }
 
 function getSlotRules_() {
@@ -244,9 +251,9 @@ function getConfigStatus_() {
   const configuredCalendar = calendarId ? CalendarApp.getCalendarById(calendarId) : null;
   const defaultCalendar = CalendarApp.getDefaultCalendar();
   return {
-    calendar: Boolean(configuredCalendar || defaultCalendar),
+    calendar: calendarId ? Boolean(configuredCalendar) : Boolean(defaultCalendar),
     configuredCalendarFound: Boolean(configuredCalendar),
-    usingDefaultCalendar: Boolean(calendarId && !configuredCalendar && defaultCalendar),
+    usingDefaultCalendar: Boolean(!calendarId && defaultCalendar),
     telegramToken: Boolean(props.getProperty('TELEGRAM_BOT_TOKEN')),
     telegramChat: Boolean(props.getProperty('TELEGRAM_CHAT_ID')),
     timeZone: getTimeZone_(),
