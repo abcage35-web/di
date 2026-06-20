@@ -105,10 +105,14 @@
     const bookingApiUrl = String(window.BOOKING_API_URL || '').trim();
     const bookingTimeZone = String(window.BOOKING_TIMEZONE || 'Asia/Tbilisi').trim();
     const slotList = form ? form.querySelector('[data-slot-list]') : null;
+    const slotDaySelect = form ? form.querySelector('[data-slot-day]') : null;
+    const slotTimeSelect = form ? form.querySelector('[data-slot-time]') : null;
+    const slotStatus = form ? form.querySelector('[data-slot-status]') : null;
     const slotNote = form ? form.querySelector('[data-slot-note]') : null;
     const slotRefresh = form ? form.querySelector('[data-slot-refresh]') : null;
     let slotsLoadedFromApi = false;
     let selectedSlot = null;
+    let slotGroups = [];
 
     const dayFormatter = new Intl.DateTimeFormat('ru-RU', {
         weekday: 'short',
@@ -121,16 +125,73 @@
         minute: '2-digit',
         timeZone: bookingTimeZone,
     });
+    const dateKeyFormatter = new Intl.DateTimeFormat('ru-RU', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: bookingTimeZone,
+    });
 
     function formatSlotLabel(slot) {
         const start = new Date(slot.startIso);
-        return `${dayFormatter.format(start)}, ${timeFormatter.format(start)}`;
+        return `${slot.dayLabel || dayFormatter.format(start)}, ${slot.timeLabel || slot.time || timeFormatter.format(start)}`;
     }
 
     function setSlotNote(message, isError) {
         if (!slotNote) return;
         slotNote.textContent = message;
         slotNote.classList.toggle('is-error', Boolean(isError));
+    }
+
+    function setSlotStatus(message, isError) {
+        if (!slotStatus) return;
+        slotStatus.hidden = !message;
+        slotStatus.textContent = message || '';
+        slotStatus.classList.toggle('is-error', Boolean(isError));
+    }
+
+    function setSelectPlaceholder(select, label) {
+        if (!select) return;
+        select.innerHTML = '';
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = label;
+        select.appendChild(option);
+        select.value = '';
+    }
+
+    function setSelectedSlot(slot) {
+        selectedSlot = slot;
+        const slotField = form ? form.elements.namedItem('slot') : null;
+        if (slotField) {
+            slotField.value = slot ? slot.startIso : '';
+        }
+    }
+
+    function getDateKey(date) {
+        const parts = dateKeyFormatter.formatToParts(date).reduce((acc, part) => {
+            if (part.type !== 'literal') acc[part.type] = part.value;
+            return acc;
+        }, {});
+        return `${parts.year}-${parts.month}-${parts.day}`;
+    }
+
+    function normalizeSlot(slot) {
+        if (!slot || !slot.startIso) return null;
+        const start = new Date(slot.startIso);
+        if (Number.isNaN(start.getTime())) return null;
+        const endIso = slot.endIso || new Date(start.getTime() + 15 * 60 * 1000).toISOString();
+        const available = slot.available !== false && slot.status !== 'booked';
+        const dateKey = slot.dateKey || getDateKey(start);
+
+        return {
+            ...slot,
+            endIso,
+            dateKey,
+            dayLabel: slot.dayLabel || dayFormatter.format(start),
+            timeLabel: slot.time || timeFormatter.format(start),
+            available,
+        };
     }
 
     function buildPreviewSlots() {
@@ -156,6 +217,7 @@
                 slots.push({
                     startIso: start.toISOString(),
                     endIso: end.toISOString(),
+                    available: true,
                     preview: true,
                 });
             });
@@ -164,57 +226,102 @@
         return slots;
     }
 
-    function selectSlot(slot, button) {
-        selectedSlot = slot;
-        const slotField = form ? form.elements.namedItem('slot') : null;
-        if (slotField) {
-            slotField.value = slot.startIso;
-        }
-        slotList.querySelectorAll('.slot-option').forEach((item) => {
-            item.classList.toggle('is-selected', item === button);
-            item.setAttribute('aria-pressed', String(item === button));
-        });
+    function groupSlots(slots) {
+        const groups = new Map();
+        slots
+            .map(normalizeSlot)
+            .filter(Boolean)
+            .sort((a, b) => new Date(a.startIso) - new Date(b.startIso))
+            .forEach((slot) => {
+                if (!groups.has(slot.dateKey)) {
+                    groups.set(slot.dateKey, {
+                        key: slot.dateKey,
+                        dayLabel: slot.dayLabel,
+                        slots: [],
+                        availableCount: 0,
+                    });
+                }
+                const group = groups.get(slot.dateKey);
+                group.slots.push(slot);
+                if (slot.available) group.availableCount += 1;
+            });
+
+        return Array.from(groups.values());
     }
 
-    function renderSlots(slots) {
-        if (!slotList) return;
-        slotList.innerHTML = '';
-        selectedSlot = null;
-        const slotField = form ? form.elements.namedItem('slot') : null;
-        if (slotField) slotField.value = '';
+    function renderTimeOptions(dayKey) {
+        if (!slotTimeSelect) return;
+        setSelectedSlot(null);
+        setSelectPlaceholder(slotTimeSelect, 'Выберите время');
 
-        if (!slots.length) {
-            const empty = document.createElement('p');
-            empty.className = 'slot-empty';
-            empty.textContent = 'Пока нет свободных слотов. Напишите напрямую в Telegram, и Диана предложит время вручную.';
-            slotList.appendChild(empty);
+        const group = slotGroups.find((item) => item.key === dayKey);
+        if (!group) {
+            slotTimeSelect.disabled = true;
+            setSlotStatus('', false);
             return;
         }
 
-        slots.forEach((slot) => {
-            const start = new Date(slot.startIso);
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'slot-option';
-            button.setAttribute('aria-pressed', 'false');
-
-            const day = document.createElement('span');
-            day.className = 'slot-day';
-            day.textContent = dayFormatter.format(start);
-
-            const time = document.createElement('strong');
-            time.textContent = timeFormatter.format(start);
-
-            button.append(day, time);
-            button.addEventListener('click', () => selectSlot(slot, button));
-            slotList.appendChild(button);
+        group.slots.forEach((slot) => {
+            const option = document.createElement('option');
+            option.value = slot.startIso;
+            option.textContent = slot.available ? slot.timeLabel : `${slot.timeLabel} — занято`;
+            option.disabled = !slot.available;
+            slotTimeSelect.appendChild(option);
         });
+
+        slotTimeSelect.disabled = group.slots.length === 0;
+        setSlotStatus(group.availableCount ? '' : 'На эту дату все слоты заняты.', true);
+    }
+
+    function handleDayChange() {
+        renderTimeOptions(slotDaySelect ? slotDaySelect.value : '');
+    }
+
+    function handleTimeChange() {
+        const dayKey = slotDaySelect ? slotDaySelect.value : '';
+        const group = slotGroups.find((item) => item.key === dayKey);
+        const slot = group ? group.slots.find((item) => item.startIso === slotTimeSelect.value) : null;
+        setSelectedSlot(slot && slot.available ? slot : null);
+        if (selectedSlot) setSlotStatus('', false);
+    }
+
+    function renderSlots(slots) {
+        if (!slotList || !slotDaySelect || !slotTimeSelect) return;
+        setSelectedSlot(null);
+        slotGroups = groupSlots(Array.isArray(slots) ? slots : []);
+        setSlotStatus('', false);
+
+        if (!slotGroups.length) {
+            setSelectPlaceholder(slotDaySelect, 'Нет дат');
+            setSelectPlaceholder(slotTimeSelect, 'Нет времени');
+            slotDaySelect.disabled = true;
+            slotTimeSelect.disabled = true;
+            setSlotStatus('Пока нет слотов. Напишите напрямую в Telegram, и Диана предложит время вручную.', true);
+            return;
+        }
+
+        setSelectPlaceholder(slotDaySelect, 'Выберите день');
+        slotGroups.forEach((group) => {
+            const option = document.createElement('option');
+            option.value = group.key;
+            option.textContent = group.availableCount ? group.dayLabel : `${group.dayLabel} — всё занято`;
+            slotDaySelect.appendChild(option);
+        });
+
+        const firstBookableDay = slotGroups.find((group) => group.availableCount) || slotGroups[0];
+        slotDaySelect.disabled = false;
+        slotDaySelect.value = firstBookableDay.key;
+        renderTimeOptions(firstBookableDay.key);
     }
 
     async function loadBookingSlots() {
-        if (!slotList) return;
+        if (!slotList || !slotDaySelect || !slotTimeSelect) return;
         setSlotNote('Проверяем календарь и ищем ближайшее свободное время.');
-        slotList.innerHTML = '<p class="slot-empty">Загружаем слоты...</p>';
+        setSlotStatus('', false);
+        setSelectPlaceholder(slotDaySelect, 'Загрузка дат...');
+        setSelectPlaceholder(slotTimeSelect, 'Загрузка времени...');
+        slotDaySelect.disabled = true;
+        slotTimeSelect.disabled = true;
 
         if (!bookingApiUrl) {
             slotsLoadedFromApi = false;
@@ -233,11 +340,11 @@
 
             slotsLoadedFromApi = true;
             renderSlots(Array.isArray(data.slots) ? data.slots : []);
-            setSlotNote('Показаны свободные слоты из Google Calendar.');
-        } catch (_) {
+            setSlotNote('Слоты загружены из Google Calendar.');
+        } catch (error) {
             slotsLoadedFromApi = false;
             renderSlots(buildPreviewSlots());
-            setSlotNote('Не получилось получить слоты из календаря. Можно выбрать ориентировочное время и отправить заявку в Telegram.', true);
+            setSlotNote(error.message || 'Не получилось получить слоты из календаря. Можно выбрать ориентировочное время и отправить заявку в Telegram.', true);
         }
     }
 
@@ -663,6 +770,12 @@
     }
 
     if (form) {
+        if (slotDaySelect) {
+            slotDaySelect.addEventListener('change', handleDayChange);
+        }
+        if (slotTimeSelect) {
+            slotTimeSelect.addEventListener('change', handleTimeChange);
+        }
         loadBookingSlots();
         if (slotRefresh) {
             slotRefresh.addEventListener('click', loadBookingSlots);
@@ -689,9 +802,9 @@
             if (websiteField && websiteField.value.trim()) return;
 
             if (!selectedSlot) {
-                setFormStatus('Выберите свободный слот для звонка.', true);
-                const firstSlot = slotList ? slotList.querySelector('.slot-option') : null;
-                if (firstSlot) firstSlot.focus();
+                setFormStatus('Выберите день и свободное время для звонка.', true);
+                if (slotDaySelect && !slotDaySelect.value) slotDaySelect.focus();
+                else if (slotTimeSelect) slotTimeSelect.focus();
                 return;
             }
 

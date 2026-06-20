@@ -23,7 +23,7 @@ function doGet(e) {
 
     if (action === 'slots') {
       const days = clampNumber_(Number(params.days || DEFAULT_DAYS_AHEAD), 1, 45);
-      return json_({ ok: true, slots: getAvailableSlots_(days) });
+      return json_({ ok: true, slots: getBookingSlots_(days) });
     }
 
     return json_({
@@ -110,7 +110,7 @@ function bookSlot_(payload) {
   }
 }
 
-function getAvailableSlots_(daysAhead) {
+function getBookingSlots_(daysAhead) {
   const calendar = getCalendar_();
   const rules = getSlotRules_();
   const durationMs = getDurationMinutes_() * 60 * 1000;
@@ -127,23 +127,31 @@ function getAvailableSlots_(daysAhead) {
       const start = createDateAtTime_(day, time);
       const end = new Date(start.getTime() + durationMs);
       if (start <= now) return;
-      if (!isSlotFree_(calendar, start, end)) return;
+      const available = isSlotFree_(calendar, start, end);
 
       slots.push({
         startIso: Utilities.formatDate(start, timeZone, "yyyy-MM-dd'T'HH:mm:ssXXX"),
         endIso: Utilities.formatDate(end, timeZone, "yyyy-MM-dd'T'HH:mm:ssXXX"),
+        dateKey: Utilities.formatDate(start, timeZone, 'yyyy-MM-dd'),
+        time: Utilities.formatDate(start, timeZone, 'HH:mm'),
         label: formatSlot_(start),
+        available,
       });
     });
   }
 
-  return slots.slice(0, 24);
+  return slots;
 }
 
 function isAllowedSlot_(start) {
-  return getAvailableSlots_(DEFAULT_DAYS_AHEAD + 1).some((slot) => {
-    return Math.abs(new Date(slot.startIso).getTime() - start.getTime()) < 60 * 1000;
-  });
+  const now = new Date();
+  const maxDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + DEFAULT_DAYS_AHEAD + 1);
+  if (start <= now || start >= maxDate) return false;
+
+  const rules = getSlotRules_();
+  const dayRules = rules[String(start.getDay())] || [];
+  const requestedTime = Utilities.formatDate(start, getTimeZone_(), 'HH:mm');
+  return dayRules.includes(requestedTime);
 }
 
 function isSlotFree_(calendar, start, end) {

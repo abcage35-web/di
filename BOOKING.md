@@ -28,12 +28,12 @@ Official docs used:
 
 ## Flow
 
-1. The parent fills contact fields and selects a visible slot.
+1. The parent fills contact fields and selects a day and time. Busy times stay visible but disabled.
 2. Frontend sends a booking request to Apps Script.
 3. Apps Script checks the Google Calendar again under a script lock.
 4. If the slot is still free, Apps Script creates a calendar event.
 5. Apps Script sends booking details to Telegram.
-6. Frontend shows success and reloads available slots.
+6. Frontend shows success and reloads slot availability.
 
 The server re-check is required: the browser must never be trusted as the source of availability.
 
@@ -96,7 +96,19 @@ https://script.google.com/macros/s/.../exec?action=slots&days=7
 Expected response:
 
 ```json
-{ "ok": true, "slots": [] }
+{
+  "ok": true,
+  "slots": [
+    {
+      "startIso": "2026-06-22T10:00:00+04:00",
+      "endIso": "2026-06-22T10:15:00+04:00",
+      "dateKey": "2026-06-22",
+      "time": "10:00",
+      "label": "Mon, 22 June, 10:00",
+      "available": true
+    }
+  ]
+}
 ```
 
 If Telegram is not configured, booking requests return `CONFIG_MISSING`. If another event appears in the selected interval before submission, the backend returns `SLOT_TAKEN`.

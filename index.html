@@ -659,7 +659,25 @@
                             <button type="button" class="booking-refresh" data-slot-refresh>Обновить</button>
                         </div>
                         <p class="booking-note" data-slot-note>Загружаем ближайшие доступные слоты.</p>
-                        <div class="slot-grid" data-slot-list aria-live="polite"></div>
+                        <div class="slot-picker" data-slot-list aria-live="polite">
+                            <label class="slot-select-field">
+                                <span class="slot-select-label">День</span>
+                                <span class="slot-select-wrap">
+                                    <select data-slot-day aria-label="День записи" disabled>
+                                        <option>Загрузка дат...</option>
+                                    </select>
+                                </span>
+                            </label>
+                            <label class="slot-select-field">
+                                <span class="slot-select-label">Время</span>
+                                <span class="slot-select-wrap">
+                                    <select data-slot-time aria-label="Время записи" disabled>
+                                        <option>Загрузка времени...</option>
+                                    </select>
+                                </span>
+                            </label>
+                            <p class="slot-status" data-slot-status hidden></p>
+                        </div>
                         <input type="hidden" name="slot" required>
                     </div>
                     <label class="booking-hp" aria-hidden="true">
