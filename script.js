@@ -58,7 +58,7 @@
 
     // ---- Scroll reveal ----
     const reveals = document.querySelectorAll(
-        '.section-head, .pain-card, .problem-card, .issue-picker, .reassurance-card, .reassurance-text, .proof-card, .practice-photo, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .pain-cta, .mini-cta, .approach-card, .principle, .session-card, .price-card, .atmosphere, .story-card, .resource-form, .shelf-card, .price-note, .skill-lab'
+        '.section-head, .pain-card, .problem-card, .issue-picker, .reassurance-card, .reassurance-text, .proof-card, .practice-photo, .step, .format, .review, .about-text, .about-photo, .lead-form, .cta-text, .pain-cta, .principle, .session-card, .price-card, .atmosphere, .story-card, .resource-form, .shelf-card, .price-note, .skill-lab'
     );
     reveals.forEach((el) => el.classList.add('reveal'));
 
