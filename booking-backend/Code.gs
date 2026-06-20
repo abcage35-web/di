@@ -17,19 +17,27 @@ function json_(data) {
 }
 
 function doGet(e) {
-  const params = (e && e.parameter) || {};
-  const action = String(params.action || 'health');
+  try {
+    const params = (e && e.parameter) || {};
+    const action = String(params.action || 'health');
 
-  if (action === 'slots') {
-    const days = clampNumber_(Number(params.days || DEFAULT_DAYS_AHEAD), 1, 45);
-    return json_({ ok: true, slots: getAvailableSlots_(days) });
+    if (action === 'slots') {
+      const days = clampNumber_(Number(params.days || DEFAULT_DAYS_AHEAD), 1, 45);
+      return json_({ ok: true, slots: getAvailableSlots_(days) });
+    }
+
+    return json_({
+      ok: true,
+      service: 'booking',
+      configured: getConfigStatus_(),
+    });
+  } catch (error) {
+    return json_({
+      ok: false,
+      code: error.code || 'BOOKING_ERROR',
+      error: error.message || String(error),
+    });
   }
-
-  return json_({
-    ok: true,
-    service: 'booking',
-    configured: getConfigStatus_(),
-  });
 }
 
 function doPost(e) {
