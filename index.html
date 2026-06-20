@@ -69,7 +69,7 @@
                     </p>
 
                     <p class="hero-sub">
-                        Для родителей, которые замечают тревогу, истерики, агрессию, сложности в школе или резкие перемены. Помогаю понять, что происходит и какие шаги помогут семье.
+                        Для родителей, которые замечают тревогу, истерики, агрессию, сложности в школе или резкие перемены. Можно прийти и с мягким вопросом: понять, что уже хорошо и что ещё поможет.
                     </p>
 
                     <div class="hero-actions">
@@ -214,7 +214,7 @@
                         <div class="proof-card"><strong>10+ лет</strong><span>работы с детьми разных возрастов</span></div>
                         <div class="proof-card"><strong>1100+ ч.</strong><span>профобразования в детской психологии</span></div>
                         <div class="proof-card"><strong>Kids Skills</strong><span>подход Бена Фурмана через навыки</span></div>
-                        <div class="proof-card"><strong>Супервизия</strong><span>минимум 1 раз в 2 недели</span></div>
+                        <div class="proof-card"><strong>Супервизия</strong><span>от 6 часов в месяц</span></div>
                     </div>
                     <details class="education-details">
                         <summary>Посмотреть образование</summary>
@@ -226,7 +226,7 @@
                             <li><span class="creds-mark">✓</span> CCPT 101: Basics in Child-Centered Play Therapy (Center for Play Therapy, 2023) — 12 ч.</li>
                             <li><span class="creds-mark">✓</span> Специальное образование (неоконченное высшее, 4 курса, РГПУ им. Герцена, 2022)</li>
                             <li><span class="creds-mark">✓</span> Дошкольное образование (среднее специальное, Санкт-Петербург, 2018)</li>
-                            <li><span class="creds-mark">✓</span> Минимум 1 раз в 2 недели посещаю индивидуальную и групповую супервизию.</li>
+                            <li><span class="creds-mark">✓</span> Прохожу супервизию от 6 часов в месяц.</li>
                         </ul>
                     </details>
                 </div>
@@ -370,7 +370,7 @@
             <div class="container">
                 <div class="section-head center">
                     <span class="eyebrow">можно забрать бесплатно</span>
-                    <h2>Семейный сундук суперсил семьи</h2>
+                    <h2>Семейный сундук суперсил</h2>
                     <p class="section-lead">Соберите готовую карту, которую можно распечатать или сохранить: кто в семье, какие сильные стороны уже есть и какая маленькая победа случилась. В конце появится медаль для родителя.</p>
                 </div>
 
@@ -380,12 +380,12 @@
                             <h3>1. Кто собирает сундук?</h3>
                             <div class="family-fields">
                                 <label class="field">
-                                    <span>Имя ребёнка</span>
-                                    <input type="text" id="childName" placeholder="Например, Миша">
+                                    <span>Имя ребёнка или детей</span>
+                                    <input type="text" id="childName" placeholder="Например, Виктор и Оля">
                                 </label>
                                 <label class="field">
-                                    <span>Ваше имя</span>
-                                    <input type="text" id="parentName" placeholder="Например, Аня">
+                                    <span>Имя взрослого или взрослых</span>
+                                    <input type="text" id="parentName" placeholder="Например, Диана">
                                 </label>
                             </div>
                             <div class="role-picker" aria-label="Кого указать в сундуке">
@@ -412,7 +412,7 @@
                         </div>
 
                         <div class="resource-choice-group">
-                            <h3>3. Выберите суперсилы родителя</h3>
+                            <h3>3. Выберите суперсилы взрослых</h3>
                             <div class="resource-chips">
                                 <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я умею замечать, когда всем нужна пауза">замечаю паузу</button>
                                 <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="я могу говорить спокойнее, когда есть план">говорю спокойнее</button>
@@ -422,10 +422,10 @@
                                 <button type="button" class="resource-chip parent-chip" data-shelf-target="parent" data-shelf-text="у нашей семьи есть моменты, когда получается быть командой">мы команда</button>
                             </div>
                             <label class="field">
-                                <span>Добавить своё про себя или семью</span>
+                                <span>Добавить своё про взрослого или семью</span>
                                 <input type="text" id="parentCustom" placeholder="Например: умею обнимать вместо спора">
                             </label>
-                            <button type="button" class="btn btn-primary btn-block" id="addParentCard">Добавить в сундук родителя</button>
+                            <button type="button" class="btn btn-primary btn-block" id="addParentCard">Добавить в сундук взрослого</button>
                         </div>
 
                         <label class="field">
@@ -433,6 +433,14 @@
                             <input type="text" id="winInput" placeholder="Например: один вечер без скандала из-за уроков">
                         </label>
                         <button type="button" class="btn btn-primary btn-block" id="addWin">Добавить победу</button>
+                        <div class="resource-choice-group medal-choice-group">
+                            <h3>5. Выберите медаль</h3>
+                            <div class="medal-picker-options">
+                                <label><input type="radio" name="parentMedal" value="Лучший родитель" data-medal-note="потому что замечаю, ищу поддержку и продолжаю быть рядом" data-medal-shape="round" checked> лучший родитель</label>
+                                <label><input type="radio" name="parentMedal" value="Лучшая мама" data-medal-note="потому что рядом есть тепло, внимание и забота" data-medal-shape="heart"> лучшая мама</label>
+                                <label><input type="radio" name="parentMedal" value="Лучший папа" data-medal-note="потому что рядом есть опора, внимание и забота" data-medal-shape="shield"> лучший папа</label>
+                            </div>
+                        </div>
                         <button type="button" class="btn btn-ghost btn-block print-btn" id="printShelf">Распечатать карту</button>
                         <a class="direct-contact" href="#cta">Разобрать вашу ситуацию на бесплатном звонке</a>
                     </div>
@@ -440,7 +448,7 @@
                         <div class="cabinet-roof">
                             <span class="medal" aria-hidden="true">★</span>
                             <div>
-                                <h3 data-treasure-title>Сундук суперсил семьи</h3>
+                                <h3 data-treasure-title>Семейный сундук суперсил</h3>
                                 <p data-treasure-subtitle>Соберите его вместе и распечатайте как напоминание: у вашей семьи уже есть опоры.</p>
                             </div>
                         </div>
@@ -451,7 +459,19 @@
                                     <li>уже умеет учиться новому</li>
                                 </ul>
                             </section>
-                            <section class="cabinet-shelf parent-shelf">
+                            <section class="cabinet-shelf mom-shelf" data-mom-shelf hidden>
+                                <h4>Суперсилы мамы</h4>
+                                <ul class="shelf-list" id="momShelf">
+                                    <li>уже ищет, как семье стало бы легче</li>
+                                </ul>
+                            </section>
+                            <section class="cabinet-shelf dad-shelf" data-dad-shelf hidden>
+                                <h4>Суперсилы папы</h4>
+                                <ul class="shelf-list" id="dadShelf">
+                                    <li>уже ищет, как семье стало бы легче</li>
+                                </ul>
+                            </section>
+                            <section class="cabinet-shelf parent-shelf" data-parent-shelf-wrap>
                                 <h4 data-parent-shelf-title>Суперсилы родителя</h4>
                                 <ul class="shelf-list" id="parentShelf">
                                     <li>уже ищет, как семье стало бы легче</li>
@@ -464,10 +484,10 @@
                                 </ul>
                             </section>
                         </div>
-                        <div class="parent-medal" aria-live="polite">
+                        <div class="parent-medal medal-round" aria-live="polite">
                             <span class="parent-medal-mark">★</span>
-                            <strong>Я хороший родитель</strong>
-                            <small>потому что замечаю, ищу поддержку и продолжаю быть рядом</small>
+                            <strong data-medal-title>Лучший родитель</strong>
+                            <small data-medal-note>потому что замечаю, ищу поддержку и продолжаю быть рядом</small>
                         </div>
                         <div class="trophy-row" aria-hidden="true">
                             <span class="trophy medal-shape"></span>
@@ -564,6 +584,21 @@
                         <li><span>✓</span> Если нужен врач, логопед или нейропсихолог, я скажу честно</li>
                         <li><span>✓</span> Ответ приходит в Telegram</li>
                     </ul>
+
+                    <div class="cta-faq">
+                        <details>
+                            <summary>Что будет на бесплатном звонке?</summary>
+                            <p>За 15 минут коротко разберём запрос и выберем первый шаг: разовая консультация, встречи с ребёнком, диагностика или другой специалист.</p>
+                        </details>
+                        <details>
+                            <summary>Можно начать без ребёнка?</summary>
+                            <p>Да. Часто первая встреча проходит только с родителем: так можно спокойно описать ситуацию и получить понятный план.</p>
+                        </details>
+                        <details>
+                            <summary>Если я не понимаю, что именно нужно?</summary>
+                            <p>Это нормально. Можно прийти с ощущением “что-то изменилось” или “я хочу понять, всё ли в порядке”.</p>
+                        </details>
+                    </div>
                 </div>
 
                 <form class="lead-form" id="leadForm" novalidate>

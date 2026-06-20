@@ -863,6 +863,27 @@ h1, h2, h3, h4 {
     color: var(--navy-deep);
     font-size: .8rem;
 }
+.cta-faq {
+    margin-top: 24px;
+    display: grid;
+    gap: 10px;
+}
+.cta-faq details {
+    padding: 14px 16px;
+    border: 1.5px dashed rgba(244, 182, 200, .34);
+    border-radius: 16px;
+    background: rgba(255, 248, 238, .07);
+}
+.cta-faq summary {
+    cursor: pointer;
+    color: var(--paper);
+    font-weight: 900;
+}
+.cta-faq p {
+    margin: 10px 0 0;
+    color: rgba(255, 248, 238, .74);
+    font-size: .95rem;
+}
 .lead-form {
     padding: 38px 34px;
     border-radius: 28px;
@@ -954,6 +975,27 @@ h1, h2, h3, h4 {
     box-shadow: 3px 3px 0 rgba(31, 64, 104, .82);
 }
 .role-picker input { accent-color: var(--coral); }
+.medal-choice-group { margin-top: 18px; }
+.medal-picker-options {
+    display: grid;
+    gap: 10px;
+}
+.medal-picker-options label {
+    min-height: 42px;
+    padding: 10px 13px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+    background: var(--white);
+    color: var(--navy-deep);
+    font-size: .92rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 rgba(31, 64, 104, .82);
+}
+.medal-picker-options input { accent-color: var(--coral); }
 .resource-choice-group {
     padding: 20px;
     margin-bottom: 18px;
@@ -1150,6 +1192,23 @@ h1, h2, h3, h4 {
     color: var(--navy);
     font-size: 1.8rem;
     box-shadow: 4px 4px 0 var(--pink);
+}
+.parent-medal.medal-heart .parent-medal-mark {
+    border-radius: 18px 18px 24px 24px;
+    background: var(--pink);
+    transform: rotate(-45deg);
+}
+.parent-medal.medal-heart .parent-medal-mark::before {
+    content: "★";
+    transform: rotate(45deg);
+}
+.parent-medal.medal-heart .parent-medal-mark {
+    color: transparent;
+}
+.parent-medal.medal-shield .parent-medal-mark {
+    border-radius: 18px 18px 26px 26px;
+    clip-path: polygon(50% 0, 92% 18%, 84% 76%, 50% 100%, 16% 76%, 8% 18%);
+    background: var(--coral);
 }
 .parent-medal strong {
     display: block;
@@ -1606,7 +1665,7 @@ body.has-scrolled .sticky-telegram {
     }
     .issue-columns { grid-template-columns: 1fr; }
     .resource-choice-group { padding: 16px; }
-    .resource-chip, .role-picker label { width: 100%; justify-content: center; }
+    .resource-chip, .role-picker label, .medal-picker-options label { width: 100%; justify-content: center; }
     .resource-form, .shelf-card { padding: 24px 20px; }
     .shelf-card { padding: 0; }
     .cabinet-roof { padding: 22px 20px 18px; align-items: flex-start; }

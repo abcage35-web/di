@@ -197,35 +197,82 @@
     const treasureSubtitle = document.querySelector('[data-treasure-subtitle]');
     const childShelfTitle = document.querySelector('[data-child-shelf-title]');
     const parentShelfTitle = document.querySelector('[data-parent-shelf-title]');
+    const parentShelfWrap = document.querySelector('[data-parent-shelf-wrap]');
+    const momShelfWrap = document.querySelector('[data-mom-shelf]');
+    const dadShelfWrap = document.querySelector('[data-dad-shelf]');
+    const parentMedal = document.querySelector('.parent-medal');
+    const medalTitle = document.querySelector('[data-medal-title]');
+    const medalNote = document.querySelector('[data-medal-note]');
     const childCustom = document.getElementById('childCustom');
     const parentCustom = document.getElementById('parentCustom');
     const winInput = document.getElementById('winInput');
     const winList = document.getElementById('winList');
     const childShelf = document.getElementById('childShelf');
     const parentShelf = document.getElementById('parentShelf');
+    const momShelf = document.getElementById('momShelf');
+    const dadShelf = document.getElementById('dadShelf');
 
     function getFamilyRoles() {
         const none = document.querySelector('[data-family-none]');
-        if (none && none.checked) return '';
+        if (none && none.checked) return [];
         return Array.from(document.querySelectorAll('[data-family-role]'))
             .filter((input) => input.checked)
-            .map((input) => input.value)
-            .join(' и ');
+            .map((input) => input.value);
+    }
+
+    function joinText(items) {
+        if (items.length < 2) return items[0] || '';
+        if (items.length === 2) return `${items[0]} и ${items[1]}`;
+        return `${items.slice(0, -1).join(', ')} и ${items[items.length - 1]}`;
+    }
+
+    function capitalize(value) {
+        return value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
     }
 
     function updateTreasureLabels() {
         const child = childName ? childName.value.trim() : '';
         const parent = parentName ? parentName.value.trim() : '';
         const roles = getFamilyRoles();
-        const family = child ? `Сундук суперсил семьи ${child}` : 'Сундук суперсил семьи';
-        if (treasureTitle) treasureTitle.textContent = family;
-        if (childShelfTitle) childShelfTitle.textContent = child ? `Суперсилы ${child}` : 'Суперсилы ребёнка';
-        if (parentShelfTitle) parentShelfTitle.textContent = parent ? `Суперсилы ${parent}` : 'Суперсилы родителя';
+        const names = [parent, child].filter(Boolean);
+        if (treasureTitle) {
+            treasureTitle.textContent = names.length
+                ? `Семейный сундук: ${names.join(', ')}`
+                : 'Семейный сундук суперсил';
+        }
+        if (childShelfTitle) childShelfTitle.textContent = child ? `Суперсилы: ${child}` : 'Суперсилы ребёнка';
+        if (parentShelfTitle) parentShelfTitle.textContent = parent ? `Суперсилы взрослого: ${parent}` : 'Суперсилы родителя';
+        if (momShelfWrap) momShelfWrap.hidden = !roles.includes('мама');
+        if (dadShelfWrap) dadShelfWrap.hidden = !roles.includes('папа');
+        if (parentShelfWrap) parentShelfWrap.hidden = roles.includes('мама') || roles.includes('папа');
         if (treasureSubtitle) {
-            const who = [parent, roles].filter(Boolean).join(', ');
+            const roleText = roles.length ? joinText(roles) : '';
+            const who = parent && roleText
+                ? `${parent} (${roleText})`
+                : parent || capitalize(roleText);
             treasureSubtitle.textContent = who
                 ? `${who}: выберите опоры и распечатайте карту для дома.`
                 : 'Выберите опоры и распечатайте карту для дома.';
+        }
+    }
+
+    function getParentTargets() {
+        const roles = getFamilyRoles();
+        const targets = [];
+        if (roles.includes('мама') && momShelf) targets.push(momShelf);
+        if (roles.includes('папа') && dadShelf) targets.push(dadShelf);
+        if (!targets.length && parentShelf) targets.push(parentShelf);
+        return targets;
+    }
+
+    function updateMedal() {
+        const selected = document.querySelector('input[name="parentMedal"]:checked');
+        if (!selected) return;
+        if (medalTitle) medalTitle.textContent = selected.value;
+        if (medalNote) medalNote.textContent = selected.dataset.medalNote || '';
+        if (parentMedal) {
+            parentMedal.classList.remove('medal-round', 'medal-heart', 'medal-shield');
+            parentMedal.classList.add(`medal-${selected.dataset.medalShape || 'round'}`);
         }
     }
 
@@ -253,6 +300,10 @@
         });
     });
     updateTreasureLabels();
+    document.querySelectorAll('input[name="parentMedal"]').forEach((input) => {
+        input.addEventListener('change', updateMedal);
+    });
+    updateMedal();
 
     function addShelfItem(list, text) {
         const value = text.trim();
@@ -271,8 +322,11 @@
 
     document.querySelectorAll('.resource-chip').forEach((chip) => {
         chip.addEventListener('click', () => {
-            const target = chip.dataset.shelfTarget === 'parent' ? parentShelf : childShelf;
-            const added = addShelfItem(target, chip.dataset.shelfText || chip.textContent);
+            const targets = chip.dataset.shelfTarget === 'parent' ? getParentTargets() : [childShelf];
+            let added = false;
+            targets.forEach((target) => {
+                added = addShelfItem(target, chip.dataset.shelfText || chip.textContent) || added;
+            });
             if (added) {
                 chip.classList.add('is-added');
                 chip.setAttribute('aria-pressed', 'true');
@@ -297,7 +351,11 @@
                 parentCustom.focus();
                 return;
             }
-            if (addShelfItem(parentShelf, parentCustom.value)) parentCustom.value = '';
+            let added = false;
+            getParentTargets().forEach((target) => {
+                added = addShelfItem(target, parentCustom.value) || added;
+            });
+            if (added) parentCustom.value = '';
             parentCustom.focus();
         });
     }
