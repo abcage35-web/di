@@ -598,13 +598,13 @@
                 <div class="cta-text">
                     <span class="eyebrow">первый шаг</span>
                     <h2>Запишитесь на бесплатный звонок</h2>
-                    <p>Сайт подготовит заявку и откроет Telegram. Останется вставить текст и отправить.</p>
+                    <p>Выберите удобное время: сайт забронирует слот в календаре, а Диана получит детали записи в Telegram.</p>
 
                     <ul class="cta-bullets">
                         <li><span>✓</span> Можно начать без ребёнка</li>
                         <li><span>✓</span> Иногда достаточно одной встречи</li>
                         <li><span>✓</span> Если нужен врач, логопед или нейропсихолог, я скажу честно</li>
-                        <li><span>✓</span> Ответ приходит в Telegram</li>
+                        <li><span>✓</span> Запись фиксируется в Google Calendar</li>
                     </ul>
 
                     <div class="cta-faq">
@@ -653,12 +653,25 @@
                         <span>Что беспокоит? <em>(по желанию)</em></span>
                         <textarea name="message" rows="3" placeholder="Например: истерики перед садиком, тревога, школа, сон"></textarea>
                     </label>
+                    <div class="booking-field" data-booking>
+                        <div class="booking-field-head">
+                            <span>Свободное время для звонка</span>
+                            <button type="button" class="booking-refresh" data-slot-refresh>Обновить</button>
+                        </div>
+                        <p class="booking-note" data-slot-note>Загружаем ближайшие доступные слоты.</p>
+                        <div class="slot-grid" data-slot-list aria-live="polite"></div>
+                        <input type="hidden" name="slot" required>
+                    </div>
+                    <label class="booking-hp" aria-hidden="true">
+                        <span>Website</span>
+                        <input type="text" name="website" tabindex="-1" autocomplete="off">
+                    </label>
                     <button type="submit" class="btn btn-primary btn-block">
-                        Скопировать заявку и открыть Telegram
+                        Записаться на выбранный слот
                         <span class="btn-arrow">→</span>
                     </button>
                     <a class="direct-contact" href="https://t.me/dizvilook" target="_blank" rel="noopener">Или написать напрямую: @dizvilook</a>
-                    <p class="form-privacy"><strong>Важно:</strong> после открытия Telegram вставьте скопированный текст в чат и нажмите “Отправить”.</p>
+                    <p class="form-privacy"><strong>Важно:</strong> заявка отправляется в календарь Дианы и в служебный Telegram-чат. Если календарь временно недоступен, сайт предложит написать напрямую.</p>
                 </form>
             </div>
         </section>
@@ -729,6 +742,7 @@
         </svg>
     </div>
 
+    <script src="booking-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

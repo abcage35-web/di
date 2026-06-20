@@ -102,6 +102,155 @@
         status.classList.toggle('is-error', Boolean(isError));
     }
 
+    const bookingApiUrl = String(window.BOOKING_API_URL || '').trim();
+    const bookingTimeZone = String(window.BOOKING_TIMEZONE || 'Asia/Tbilisi').trim();
+    const slotList = form ? form.querySelector('[data-slot-list]') : null;
+    const slotNote = form ? form.querySelector('[data-slot-note]') : null;
+    const slotRefresh = form ? form.querySelector('[data-slot-refresh]') : null;
+    let slotsLoadedFromApi = false;
+    let selectedSlot = null;
+
+    const dayFormatter = new Intl.DateTimeFormat('ru-RU', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'long',
+        timeZone: bookingTimeZone,
+    });
+    const timeFormatter = new Intl.DateTimeFormat('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: bookingTimeZone,
+    });
+
+    function formatSlotLabel(slot) {
+        const start = new Date(slot.startIso);
+        return `${dayFormatter.format(start)}, ${timeFormatter.format(start)}`;
+    }
+
+    function setSlotNote(message, isError) {
+        if (!slotNote) return;
+        slotNote.textContent = message;
+        slotNote.classList.toggle('is-error', Boolean(isError));
+    }
+
+    function buildPreviewSlots() {
+        const slots = [];
+        const now = new Date();
+        const weekdayTimes = ['10:00', '12:30', '15:00', '18:00'];
+        const saturdayTimes = ['11:00', '13:00'];
+
+        for (let dayOffset = 1; dayOffset <= 14 && slots.length < 12; dayOffset += 1) {
+            const day = new Date(now);
+            day.setDate(now.getDate() + dayOffset);
+            const weekday = day.getDay();
+            if (weekday === 0) continue;
+
+            const times = weekday === 6 ? saturdayTimes : weekdayTimes;
+            times.forEach((time) => {
+                if (slots.length >= 12) return;
+                const [hours, minutes] = time.split(':').map(Number);
+                const start = new Date(day);
+                start.setHours(hours, minutes, 0, 0);
+                if (start <= now) return;
+                const end = new Date(start.getTime() + 15 * 60 * 1000);
+                slots.push({
+                    startIso: start.toISOString(),
+                    endIso: end.toISOString(),
+                    preview: true,
+                });
+            });
+        }
+
+        return slots;
+    }
+
+    function selectSlot(slot, button) {
+        selectedSlot = slot;
+        const slotField = form ? form.elements.namedItem('slot') : null;
+        if (slotField) {
+            slotField.value = slot.startIso;
+        }
+        slotList.querySelectorAll('.slot-option').forEach((item) => {
+            item.classList.toggle('is-selected', item === button);
+            item.setAttribute('aria-pressed', String(item === button));
+        });
+    }
+
+    function renderSlots(slots) {
+        if (!slotList) return;
+        slotList.innerHTML = '';
+        selectedSlot = null;
+        const slotField = form ? form.elements.namedItem('slot') : null;
+        if (slotField) slotField.value = '';
+
+        if (!slots.length) {
+            const empty = document.createElement('p');
+            empty.className = 'slot-empty';
+            empty.textContent = 'Пока нет свободных слотов. Напишите напрямую в Telegram, и Диана предложит время вручную.';
+            slotList.appendChild(empty);
+            return;
+        }
+
+        slots.forEach((slot) => {
+            const start = new Date(slot.startIso);
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'slot-option';
+            button.setAttribute('aria-pressed', 'false');
+
+            const day = document.createElement('span');
+            day.className = 'slot-day';
+            day.textContent = dayFormatter.format(start);
+
+            const time = document.createElement('strong');
+            time.textContent = timeFormatter.format(start);
+
+            button.append(day, time);
+            button.addEventListener('click', () => selectSlot(slot, button));
+            slotList.appendChild(button);
+        });
+    }
+
+    async function loadBookingSlots() {
+        if (!slotList) return;
+        setSlotNote('Проверяем календарь и ищем ближайшее свободное время.');
+        slotList.innerHTML = '<p class="slot-empty">Загружаем слоты...</p>';
+
+        if (!bookingApiUrl) {
+            slotsLoadedFromApi = false;
+            renderSlots(buildPreviewSlots());
+            setSlotNote('Календарь ещё не подключён. Можно выбрать ориентировочное время, заявка откроется в Telegram.', true);
+            return;
+        }
+
+        try {
+            const url = new URL(bookingApiUrl);
+            url.searchParams.set('action', 'slots');
+            url.searchParams.set('days', '21');
+            const response = await fetch(url.toString(), { method: 'GET', cache: 'no-store' });
+            const data = await response.json();
+            if (!response.ok || !data.ok) throw new Error(data.error || 'slots_failed');
+
+            slotsLoadedFromApi = true;
+            renderSlots(Array.isArray(data.slots) ? data.slots : []);
+            setSlotNote('Показаны свободные слоты из Google Calendar.');
+        } catch (_) {
+            slotsLoadedFromApi = false;
+            renderSlots(buildPreviewSlots());
+            setSlotNote('Не получилось получить слоты из календаря. Можно выбрать ориентировочное время и отправить заявку в Telegram.', true);
+        }
+    }
+
+    async function copyAndOpenTelegram(leadText, openedMessage) {
+        const opened = window.open(telegramUrl, '_blank', 'noopener');
+        try {
+            await navigator.clipboard.writeText(leadText);
+            setFormStatus(openedMessage || 'Текст заявки скопирован. Вставьте его в открывшийся чат Telegram и нажмите “Отправить”.', false, !opened);
+        } catch (_) {
+            setFormStatus('Не получилось скопировать текст автоматически. Откройте Telegram и напишите Диане коротко: выбранное время, запрос, имя, контакт и возраст ребёнка.', true, true);
+        }
+    }
+
     // ---- Mobile nav menu ----
     const navToggle = document.querySelector('.nav-toggle');
     const navEl = document.querySelector('.nav');
@@ -127,8 +276,8 @@
         const issueInputs = issuePicker.querySelectorAll('input[type="checkbox"]');
         const issueResultTitle = issuePicker.querySelector('.issue-result strong');
         const issueResult = issuePicker.querySelector('[data-issue-result]');
-        const messageField = form ? form.message : null;
-        const topicField = form ? form.topic : null;
+        const messageField = form ? form.elements.namedItem('message') : null;
+        const topicField = form ? form.elements.namedItem('topic') : null;
 
         function setIssueText(text, topic) {
             selectedIssueText = `Похоже, сейчас важнее всего: ${text}.`;
@@ -514,23 +663,46 @@
     }
 
     if (form) {
+        loadBookingSlots();
+        if (slotRefresh) {
+            slotRefresh.addEventListener('click', loadBookingSlots);
+        }
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = form.name.value.trim();
-            const contact = form.contact.value.trim();
+            const controls = form.elements;
+            const nameField = controls.namedItem('name');
+            const contactField = controls.namedItem('contact');
+            const ageField = controls.namedItem('age');
+            const topicField = controls.namedItem('topic');
+            const messageField = controls.namedItem('message');
+            const websiteField = controls.namedItem('website');
+            const name = nameField.value.trim();
+            const contact = contactField.value.trim();
             if (!name || !contact) {
-                if (!name) form.name.focus();
-                else form.contact.focus();
+                if (!name) nameField.focus();
+                else contactField.focus();
                 setFormStatus('Заполните имя и контакт, чтобы Диана могла ответить.', true);
                 return;
             }
 
-            const age = form.age.value.trim();
-            const topic = form.topic ? form.topic.value.trim() : '';
-            const message = form.message.value.trim();
+            if (websiteField && websiteField.value.trim()) return;
+
+            if (!selectedSlot) {
+                setFormStatus('Выберите свободный слот для звонка.', true);
+                const firstSlot = slotList ? slotList.querySelector('.slot-option') : null;
+                if (firstSlot) firstSlot.focus();
+                return;
+            }
+
+            const age = ageField.value.trim();
+            const topic = topicField ? topicField.value.trim() : '';
+            const message = messageField.value.trim();
+            const slotLabel = formatSlotLabel(selectedSlot);
             const leadText = [
                 'Здравствуйте, Диана! Хочу записаться на бесплатный 15-минутный звонок.',
                 '',
+                `Слот: ${slotLabel}`,
                 `Имя: ${name}`,
                 `Контакт: ${contact}`,
                 age ? `Возраст ребёнка: ${age}` : '',
@@ -539,13 +711,50 @@
                 message ? `Что беспокоит: ${message}` : '',
             ].filter(Boolean).join('\n');
 
-            const opened = window.open(telegramUrl, '_blank', 'noopener');
+            const payload = {
+                name,
+                contact,
+                age,
+                topic,
+                message,
+                selectedIssueText,
+                slotStart: selectedSlot.startIso,
+                slotEnd: selectedSlot.endIso,
+                slotLabel,
+                pageUrl: window.location.href,
+            };
+
+            if (!bookingApiUrl || !slotsLoadedFromApi) {
+                await copyAndOpenTelegram(leadText, 'Календарь пока не подключён. Текст заявки скопирован: вставьте его в Telegram и нажмите “Отправить”.');
+                return;
+            }
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+            setFormStatus('Бронируем слот в календаре...', false);
 
             try {
-                await navigator.clipboard.writeText(leadText);
-                setFormStatus('Текст заявки скопирован. Вставьте его в открывшийся чат Telegram и нажмите “Отправить”.', false, !opened);
-            } catch (_) {
-                setFormStatus('Не получилось скопировать текст автоматически. Откройте Telegram и напишите Диане коротко: запрос, имя, контакт и возраст ребёнка.', true, true);
+                const response = await fetch(bookingApiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload),
+                });
+                const data = await response.json();
+                if (!response.ok || !data.ok) throw data;
+
+                setFormStatus(`Готово: ${data.slotLabel || slotLabel}. Запись добавлена в календарь, детали отправлены в Telegram.`, false);
+                form.reset();
+                await loadBookingSlots();
+            } catch (error) {
+                const slotTaken = error && (error.code === 'SLOT_TAKEN' || error.error === 'SLOT_TAKEN');
+                if (slotTaken) {
+                    setFormStatus('Этот слот только что заняли. Выберите другое время.', true);
+                    await loadBookingSlots();
+                    return;
+                }
+                await copyAndOpenTelegram(leadText, 'Не получилось подтвердить запись автоматически. Текст заявки скопирован: отправьте его Диане в Telegram.');
+            } finally {
+                if (submitButton) submitButton.disabled = false;
             }
         });
     }
