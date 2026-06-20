@@ -1,3 +1,5 @@
 assets/preview-*.png
 assets/child-psychology-hero.png
 assets/child-psychology-hero.jpg
+.env
+.env.*
