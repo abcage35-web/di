@@ -10,6 +10,12 @@ const DEFAULT_SLOT_RULES = {
   6: ['11:00', '13:00'],
 };
 
+function json_(data) {
+  return ContentService
+    .createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function doGet(e) {
   const params = (e && e.parameter) || {};
   const action = String(params.action || 'health');
@@ -250,12 +256,6 @@ function assertConfigured_() {
   if (missing.length) {
     throw publicError_('CONFIG_MISSING', `Не настроены свойства: ${missing.join(', ')}.`);
   }
-}
-
-function json_(data) {
-  return ContentService
-    .createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
 }
 
 function clampNumber_(value, min, max) {
