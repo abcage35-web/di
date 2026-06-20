@@ -1,6 +1,7 @@
 const DEFAULT_TIME_ZONE = 'Asia/Tbilisi';
 const DEFAULT_DURATION_MINUTES = 15;
 const DEFAULT_DAYS_AHEAD = 21;
+const SLOT_CACHE_SECONDS = 60;
 const DEFAULT_SLOT_RULES = {
   1: ['10:00', '12:30', '15:00', '18:00'],
   2: ['10:00', '12:30', '15:00', '18:00'],
@@ -23,7 +24,8 @@ function doGet(e) {
 
     if (action === 'slots') {
       const days = clampNumber_(Number(params.days || DEFAULT_DAYS_AHEAD), 1, 45);
-      return json_({ ok: true, slots: getBookingSlots_(days) });
+      const fresh = params.fresh === '1';
+      return json_({ ok: true, slots: getCachedBookingSlots_(days, fresh) });
     }
 
     return json_({
@@ -96,6 +98,7 @@ function bookSlot_(payload) {
       description,
       location: 'Telegram / онлайн',
     });
+    clearSlotsCache_();
 
     const telegramSent = sendTelegram_(payload, slotLabel, event.getId());
 
@@ -108,6 +111,49 @@ function bookSlot_(payload) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function getCachedBookingSlots_(daysAhead, fresh) {
+  const cache = CacheService.getScriptCache();
+  const cacheKey = getSlotsCacheKey_(daysAhead);
+  if (!fresh) {
+    const cached = cache.get(cacheKey);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+  }
+
+  const slots = getBookingSlots_(daysAhead);
+  cache.put(cacheKey, JSON.stringify(slots), SLOT_CACHE_SECONDS);
+  return slots;
+}
+
+function clearSlotsCache_() {
+  const cache = CacheService.getScriptCache();
+  [DEFAULT_DAYS_AHEAD, DEFAULT_DAYS_AHEAD + 1, 7, 14, 30, 45].forEach((daysAhead) => {
+    cache.remove(getSlotsCacheKey_(daysAhead));
+  });
+}
+
+function getSlotsCacheKey_(daysAhead) {
+  const props = PropertiesService.getScriptProperties();
+  const keyParts = [
+    props.getProperty('CALENDAR_ID') || 'default',
+    props.getProperty('SLOT_RULES_JSON') || 'default',
+    getDurationMinutes_(),
+    getTimeZone_(),
+    daysAhead,
+  ];
+  return `booking-slots:${digest_(keyParts.join('|'))}`;
+}
+
+function digest_(value) {
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, value)
+    .map((byte) => {
+      const normalized = byte < 0 ? byte + 256 : byte;
+      return (`0${normalized.toString(16)}`).slice(-2);
+    })
+    .join('');
 }
 
 function getBookingSlots_(daysAhead) {

@@ -375,6 +375,9 @@
             const url = new URL(bookingApiUrl);
             url.searchParams.set('action', 'slots');
             url.searchParams.set('days', String(slotRequestDays));
+            if (forceRefresh) {
+                url.searchParams.set('fresh', '1');
+            }
             const response = await fetch(url.toString(), { method: 'GET', cache: 'no-store' });
             const data = await response.json();
             if (!response.ok || !data.ok) throw new Error(data.error || 'slots_failed');
