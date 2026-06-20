@@ -110,6 +110,9 @@
     const slotStatus = form ? form.querySelector('[data-slot-status]') : null;
     const slotNote = form ? form.querySelector('[data-slot-note]') : null;
     const slotRefresh = form ? form.querySelector('[data-slot-refresh]') : null;
+    const slotRequestDays = 21;
+    const slotCacheTtlMs = 2 * 60 * 1000;
+    const slotCacheKey = bookingApiUrl ? `booking-slots:${bookingApiUrl}:${bookingTimeZone}:${slotRequestDays}` : '';
     let slotsLoadedFromApi = false;
     let selectedSlot = null;
     let slotGroups = [];
@@ -180,6 +183,7 @@
         if (!slot || !slot.startIso) return null;
         const start = new Date(slot.startIso);
         if (Number.isNaN(start.getTime())) return null;
+        if (start <= new Date()) return null;
         const endIso = slot.endIso || new Date(start.getTime() + 15 * 60 * 1000).toISOString();
         const available = slot.available !== false && slot.status !== 'booked';
         const dateKey = slot.dateKey || getDateKey(start);
@@ -224,6 +228,35 @@
         }
 
         return slots;
+    }
+
+    function readSlotCache() {
+        if (!slotCacheKey) return null;
+        try {
+            const cached = JSON.parse(window.localStorage.getItem(slotCacheKey) || 'null');
+            if (!cached || !Array.isArray(cached.slots)) return null;
+            if (Date.now() - Number(cached.savedAt || 0) > slotCacheTtlMs) return null;
+            return cached.slots;
+        } catch (_) {
+            return null;
+        }
+    }
+
+    function writeSlotCache(slots) {
+        if (!slotCacheKey || !Array.isArray(slots)) return;
+        try {
+            window.localStorage.setItem(slotCacheKey, JSON.stringify({
+                savedAt: Date.now(),
+                slots,
+            }));
+        } catch (_) {}
+    }
+
+    function clearSlotCache() {
+        if (!slotCacheKey) return;
+        try {
+            window.localStorage.removeItem(slotCacheKey);
+        } catch (_) {}
     }
 
     function groupSlots(slots) {
@@ -314,14 +347,22 @@
         renderTimeOptions(firstBookableDay.key);
     }
 
-    async function loadBookingSlots() {
+    async function loadBookingSlots(options = {}) {
         if (!slotList || !slotDaySelect || !slotTimeSelect) return;
-        setSlotNote('Проверяем календарь и ищем ближайшее свободное время.');
+        const forceRefresh = Boolean(options.forceRefresh);
+        const cachedSlots = forceRefresh ? null : readSlotCache();
+
+        setSlotNote(cachedSlots ? 'Показываем последние слоты, обновляем календарь.' : 'Проверяем календарь и ищем ближайшее свободное время.');
         setSlotStatus('', false);
-        setSelectPlaceholder(slotDaySelect, 'Загрузка дат...');
-        setSelectPlaceholder(slotTimeSelect, 'Загрузка времени...');
-        slotDaySelect.disabled = true;
-        slotTimeSelect.disabled = true;
+        if (cachedSlots) {
+            slotsLoadedFromApi = true;
+            renderSlots(cachedSlots);
+        } else {
+            setSelectPlaceholder(slotDaySelect, 'Загрузка дат...');
+            setSelectPlaceholder(slotTimeSelect, 'Загрузка времени...');
+            slotDaySelect.disabled = true;
+            slotTimeSelect.disabled = true;
+        }
 
         if (!bookingApiUrl) {
             slotsLoadedFromApi = false;
@@ -333,17 +374,20 @@
         try {
             const url = new URL(bookingApiUrl);
             url.searchParams.set('action', 'slots');
-            url.searchParams.set('days', '21');
+            url.searchParams.set('days', String(slotRequestDays));
             const response = await fetch(url.toString(), { method: 'GET', cache: 'no-store' });
             const data = await response.json();
             if (!response.ok || !data.ok) throw new Error(data.error || 'slots_failed');
 
+            writeSlotCache(data.slots);
             slotsLoadedFromApi = true;
             renderSlots(Array.isArray(data.slots) ? data.slots : []);
             setSlotNote('Слоты загружены из Google Calendar.');
         } catch (error) {
-            slotsLoadedFromApi = false;
-            renderSlots(buildPreviewSlots());
+            if (!cachedSlots) {
+                slotsLoadedFromApi = false;
+                renderSlots(buildPreviewSlots());
+            }
             setSlotNote(error.message || 'Не получилось получить слоты из календаря. Можно выбрать ориентировочное время и отправить заявку в Telegram.', true);
         }
     }
@@ -778,7 +822,7 @@
         }
         loadBookingSlots();
         if (slotRefresh) {
-            slotRefresh.addEventListener('click', loadBookingSlots);
+            slotRefresh.addEventListener('click', () => loadBookingSlots({ forceRefresh: true }));
         }
 
         form.addEventListener('submit', async (e) => {
@@ -857,12 +901,14 @@
 
                 setFormStatus(`Готово: ${data.slotLabel || slotLabel}. Запись добавлена в календарь, детали отправлены в Telegram.`, false);
                 form.reset();
-                await loadBookingSlots();
+                clearSlotCache();
+                await loadBookingSlots({ forceRefresh: true });
             } catch (error) {
                 const slotTaken = error && (error.code === 'SLOT_TAKEN' || error.error === 'SLOT_TAKEN');
                 if (slotTaken) {
                     setFormStatus('Этот слот только что заняли. Выберите другое время.', true);
-                    await loadBookingSlots();
+                    clearSlotCache();
+                    await loadBookingSlots({ forceRefresh: true });
                     return;
                 }
                 await copyAndOpenTelegram(leadText, 'Не получилось подтвердить запись автоматически. Текст заявки скопирован: отправьте его Диане в Telegram.');

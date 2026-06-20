@@ -116,6 +116,8 @@ function getBookingSlots_(daysAhead) {
   const durationMs = getDurationMinutes_() * 60 * 1000;
   const timeZone = getTimeZone_();
   const now = new Date();
+  const rangeEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysAhead + 1);
+  const busyEvents = calendar.getEvents(now, rangeEnd);
   const slots = [];
 
   for (let dayOffset = 0; dayOffset < daysAhead; dayOffset += 1) {
@@ -127,7 +129,7 @@ function getBookingSlots_(daysAhead) {
       const start = createDateAtTime_(day, time);
       const end = new Date(start.getTime() + durationMs);
       if (start <= now) return;
-      const available = isSlotFree_(calendar, start, end);
+      const available = !hasEventOverlap_(busyEvents, start, end);
 
       slots.push({
         startIso: Utilities.formatDate(start, timeZone, "yyyy-MM-dd'T'HH:mm:ssXXX"),
@@ -141,6 +143,10 @@ function getBookingSlots_(daysAhead) {
   }
 
   return slots;
+}
+
+function hasEventOverlap_(events, start, end) {
+  return events.some((event) => event.getStartTime() < end && event.getEndTime() > start);
 }
 
 function isAllowedSlot_(start) {
