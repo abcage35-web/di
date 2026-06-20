@@ -11,9 +11,10 @@ const DEFAULT_SLOT_RULES = {
 };
 
 function doGet(e) {
-  const action = String((e.parameter && e.parameter.action) || 'health');
+  const params = (e && e.parameter) || {};
+  const action = String(params.action || 'health');
   if (action === 'slots') {
-    const days = clampNumber_(Number(e.parameter.days || DEFAULT_DAYS_AHEAD), 1, 45);
+    const days = clampNumber_(Number(params.days || DEFAULT_DAYS_AHEAD), 1, 45);
     return json_({ ok: true, slots: getAvailableSlots_(days) });
   }
 

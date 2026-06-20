@@ -60,20 +60,24 @@ SLOT_RULES_JSON={"1":["10:00","12:30","15:00","18:00"],"2":["10:00","12:30","15:
 
 If `CALENDAR_ID` is omitted, the script uses the default calendar of the Google account that deploys the Web App.
 
-5. Deploy as `Web app`:
+5. Optional authorization check before deployment:
+
+In Apps Script, select `doGet` in the function dropdown and click `Run`. Google will ask for Calendar and external request permissions. A manual `Run` does not include real web request parameters, so the health response is only useful for authorization.
+
+6. Deploy as `Web app`:
 
 ```text
 Execute as: Me
 Who has access: Anyone
 ```
 
-6. Copy the deployed `/exec` URL and put it into `booking-config.js`:
+7. Copy the deployed `/exec` URL and put it into `booking-config.js`:
 
 ```js
 window.BOOKING_API_URL = 'https://script.google.com/macros/s/.../exec';
 ```
 
-7. Commit and push `booking-config.js` to `main`.
+8. Commit and push `booking-config.js` to `main`.
 
 ## Quick tests
 
